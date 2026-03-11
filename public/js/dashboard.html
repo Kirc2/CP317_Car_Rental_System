@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Car Rental - Dashboard</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #FFA500;
+            font-family: Arial, sans-serif;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 50px 20px;
+        }
+
+        .welcome {
+            text-align: center;
+            margin-bottom: 40px;
+            font-size: 28px;
+            font-weight: bold;
+            color: white;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.2);
+        }
+
+        .welcome span {
+            color: #7B3A00;
+        }
+
+        .dashboard-box {
+            background-color: #B36A00;
+            border-radius: 20px;
+            padding: 30px 40px;
+            width: 100%;
+            max-width: 480px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .dashboard-box h2 {
+            color: white;
+            font-size: 18px;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 6px;
+        }
+        
+        .nav-btn {
+            width: 100%;
+            padding: 16px;
+            border-radius: 8px;
+            border: 1.5px solid #333;
+            background-color: #f0f0ee;
+            font-size: 15px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            text-align: center;
+            text-decoration: none;
+            color: #333;
+            display: block;
+        }
+
+        .nav-btn:hover {
+            background-color: #ddd;
+        }
+
+        .logout-btn {
+            margin-top: 10px;
+            background-color: transparent;
+            border: 1.5px solid white;
+            color: white;
+        }
+
+        .logout-btn:hover {
+            background-color: rgba(255,255,255,0.15);
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="welcome">
+        Welcome, <span id="usernameDisplay">Username</span>
+    </div>
+
+    
+    <div class="dashboard-box">
+        <h2>What are you looking for?</h2>
+        <a class="nav-btn" href="rentals.html"> Search for Rentals</a>
+        <a class="nav-btn" href="history.html"> View your History</a>
+        <a class="nav-btn" href="maintenance.html"> Car Maintenance</a>
+
+        <button class="nav-btn logout-btn" onclick="logout()">Logout</button>
+
+    </div>
+        <script>
+            const username = sessionStorage.getItem('username') || 'Guest';
+            document.getElementById('usernameDisplay').textContent = username;
+            function logout() {
+                sessionStorage.clear();
+                window.location.href = 'index.html';
+            }
+        </script>
+</body>
+</html>
+
+
+
+
+        
+
+
