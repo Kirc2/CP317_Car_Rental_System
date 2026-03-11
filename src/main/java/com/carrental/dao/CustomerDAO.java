@@ -95,5 +95,6 @@ public class CustomerDAO {
 	public static void insertRecord(String username, String email, String password) {
 		String query = "INSERT INTO customers(name, email, password) VALUES('"+username+"','"+email+"','"+password+"');";
 		MySQL.insert(query);
+		
 	}
 }

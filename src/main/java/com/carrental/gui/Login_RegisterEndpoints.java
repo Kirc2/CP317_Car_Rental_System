@@ -31,6 +31,7 @@ public class Login_RegisterEndpoints {
 	                return;
 	            }
 	            try { 	
+	            	customerService.Register(customer);
 	            	String jsonResponse = JSONUtil.customerToJson(customer);
 	                JSONUtil.sendResponse(exchange, 201, jsonResponse);
 	            } catch (Exception e) {
@@ -59,7 +60,7 @@ public class Login_RegisterEndpoints {
 	            }
 	            try {            	
 	                Customer customer = customerService.Login(email, password);
-	                JSONUtil.sendResponse(exchange, 200, JSONUtil.customerToJson(customer));
+	                JSONUtil.sendResponse(exchange, 200, JSONUtil.jsonifyString("Login Successful"));
 	            } catch (Exception e) {
 	            	JSONUtil.sendResponse(exchange, 401, "{\"error\":\"" + JSONUtil.escapeJson(e.getMessage()) + "\"}");
 	            }
