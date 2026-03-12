@@ -57,14 +57,17 @@ public class DAOTest {
         assertTrue(MySQL.insert(sql), "Failed to insert customer: " + email);
     }
 
-    private void insertRental(String vehiclePlate, String customerEmail, LocalDateTime start, LocalDateTime end, double cost) {
-        int vehicleId = getVehicleIdByPlate(vehiclePlate);
-        int customerId = getCustomerIdByEmail(customerEmail);
-        String sql = String.format(
-            "INSERT INTO rentals (vehicle_id, customer_id, start_date, end_date, total_cost) VALUES (%d, %d, '%s', '%s', %.2f)",
-            vehicleId, customerId, start.toString().replace('T', ' '), end.toString().replace('T', ' '), cost
-        );
-        assertTrue(MySQL.insert(sql), "Failed to insert rental");
+    private void insertRental(String vehiclePlate, String customerEmail, 
+        LocalDateTime start, LocalDateTime end, double cost) {
+		int vehicleId = getVehicleIdByPlate(vehiclePlate);
+		int customerId = getCustomerIdByEmail(customerEmail);
+		String sql = "INSERT INTO rentals (vehicle_id, customer_id, start_date, end_date, total_cost) " +
+		   "VALUES (?, ?, ?, ?, ?)";
+		assertTrue(MySQL.insert(sql, vehicleId, customerId, 
+		              java.sql.Timestamp.valueOf(start), 
+		              java.sql.Timestamp.valueOf(end), 
+		              cost), 
+		 "Failed to insert rental");
     }
 
     private int getVehicleIdByPlate(String plate) {
@@ -91,6 +94,7 @@ public class DAOTest {
         fail("Customer not found: " + email);
         return -1;
     }
+
 
     // ========== VehicleDAO Tests ==========
 
@@ -155,7 +159,7 @@ public class DAOTest {
         int id = getVehicleIdByPlate("ABC-321");
 
         VehicleDAO vehicleDAO = new VehicleDAO();
-        boolean updated = vehicleDAO.updateStatus(String.valueOf(id), Vehicle.VehicleStatus.MAINTENANCE);
+        boolean updated = vehicleDAO.updateStatus(Integer.toString(id), Vehicle.VehicleStatus.MAINTENANCE);
         assertTrue(updated);
 
         // Verify directly via SQL
@@ -199,6 +203,7 @@ public class DAOTest {
 
     @Test
     void testFindOverlappingRentals() {
+        // Insert test data
         insertVehicle("XYZ-789", "Honda", "Civic", 2023, 50.00, "SEDAN", "AVAILABLE");
         insertCustomer("alice@example.com", "Alice", "555-1234", "LIC123");
         insertRental("XYZ-789", "alice@example.com",
@@ -207,11 +212,11 @@ public class DAOTest {
                 200.00);
 
         RentalDAO rentalDAO = new RentalDAO();
+        String vehicleId = String.valueOf(getVehicleIdByPlate("XYZ-789"));
         LocalDateTime start = LocalDateTime.of(2025, 3, 2, 12, 0);
-        LocalDateTime end = LocalDateTime.of(2025, 3, 4, 12, 0);
+        LocalDateTime end   = LocalDateTime.of(2025, 3, 4, 12, 0);
 
-        List<Rental> overlapping = rentalDAO.findOverlappingRentals(
-                String.valueOf(getVehicleIdByPlate("XYZ-789")), start, end);
+        List<Rental> overlapping = rentalDAO.findOverlappingRentals(vehicleId, start, end);
         assertEquals(1, overlapping.size());
     }
 
@@ -250,11 +255,11 @@ public class DAOTest {
         RentalDAO.insertRecord(rental);
         List<Rental> rentallist = RentalDAO.findByCustomerID(rental.getCustomer().getCustomerID());
         assertNotNull(rentallist);
-        assertTrue(rentallist.isEmpty());
+        assertFalse(rentallist.isEmpty());
 
         // Verify via SQL
-        String sql = "SELECT * FROM rentals WHERE vehicle_id = " + vehicleId + " AND customer_id = " + customerId;
-        try (ResultSet rs = MySQL.fetch(sql)) {
+        String sql = "SELECT * FROM rentals WHERE vehicle_id = ? AND customer_id = ?";
+        try (ResultSet rs = MySQL.fetch(sql,vehicleId,customerId)) {
             assertTrue(rs.next());
             assertEquals(180.00, rs.getDouble("total_cost"));
         } catch (SQLException e) {

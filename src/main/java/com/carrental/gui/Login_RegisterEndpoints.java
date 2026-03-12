@@ -17,7 +17,7 @@ public class Login_RegisterEndpoints {
 	 * Class to handle what happens when the user wants to register, calls methods from
 	 * CustomerDAO in order to insert records in the database
 	 */
-	  static class RegisterHandler implements HttpHandler {
+	  public static class RegisterHandler implements HttpHandler {
 	        @Override
 	        public void handle(HttpExchange exchange) throws IOException {
 	            if (!"POST".equals(exchange.getRequestMethod())) {
@@ -44,7 +44,7 @@ public class Login_RegisterEndpoints {
 	     * Class to handle a client logging in, will pull records from the MySQL database
 	     * in order to verify the client
 	     */
-	    static class LoginHandler implements HttpHandler {
+	    public static class LoginHandler implements HttpHandler {
 	        @Override
 	        public void handle(HttpExchange exchange) throws IOException {
 	            if (!"POST".equals(exchange.getRequestMethod())) {

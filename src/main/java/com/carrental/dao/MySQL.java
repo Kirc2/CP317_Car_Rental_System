@@ -8,9 +8,9 @@
 package main.java.com.carrental.dao;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 
 /**
  * <p>
@@ -26,6 +26,31 @@ public class MySQL {
 	private String password;
 	private static Connection connection;
 	
+	
+	private static void setParameters(PreparedStatement pstmt, Object... params) throws SQLException {
+	    for (int i = 0; i < params.length; i++) {
+	        Object param = params[i];
+	        if (param == null) {
+	            pstmt.setNull(i + 1, java.sql.Types.NULL);
+	        } else if (param instanceof String) {
+	            pstmt.setString(i + 1, (String) param);
+	        } else if (param instanceof Integer) {
+	            pstmt.setInt(i + 1, (Integer) param);
+	        } else if (param instanceof Long) {
+	            pstmt.setLong(i + 1, (Long) param);
+	        } else if (param instanceof Double) {
+	            pstmt.setDouble(i + 1, (Double) param);
+	        } else if (param instanceof Boolean) {
+	            pstmt.setBoolean(i + 1, (Boolean) param);
+	        } else if (param instanceof java.time.LocalDate) {
+	            pstmt.setDate(i + 1, java.sql.Date.valueOf((java.time.LocalDate) param));
+	        } else if (param instanceof java.time.LocalTime) {
+	            pstmt.setTime(i + 1, java.sql.Time.valueOf((java.time.LocalTime) param));
+	        } else {
+	            pstmt.setObject(i + 1, param);
+	        }
+	    }
+	}
 	
 	/**
 	 * Call this function to connect to the mysql database, should only be ran once
@@ -55,14 +80,16 @@ public class MySQL {
 	/**
 	 * Fetch function to get information from the MySQL server
 	 * @param selectStmt the string statement of which the MySQL server will execute
+	 * @param you can put as many parameters as you please, just make sure they match the sql statements ?
 	 * @return result the ResultSet representation of the MySQL servers reply
 	 * 
 	 */
-	public static ResultSet fetch(String selectStmt) {
+	public static ResultSet fetch(String selectStmt, Object... params) {
 		ResultSet result = null;
 		try {
-			Statement statement = connection.createStatement();
-			result = statement.executeQuery(selectStmt);
+			PreparedStatement pstmt = connection.prepareStatement(selectStmt);
+			setParameters(pstmt, params);
+			result = pstmt.executeQuery();
 		} catch(SQLException e) {
 			e.printStackTrace();
 			System.err.print("Failed to fetch data from database, Please try again later");
@@ -74,18 +101,21 @@ public class MySQL {
 	/**
 	 * Insert function to create a record of data for the MySQL server
 	 * @param insertStmt the string statement of which the MySQL server will execute
+	 * @param you can put as many parameters as you please, just make sure they match the sql statements
+	 * @return success or not
 	 */
-	public static boolean insert(String insertStmt) {
-		boolean success = false;
-		try {
-			Statement statement = connection.createStatement();
-			int rowsaffected = statement.executeUpdate(insertStmt);
-			success = rowsaffected > 0;
-		} catch (SQLException e) {
-			System.err.print("Failed to create insert statement");
-			e.printStackTrace();
-		}
-		return success;
+	
+	public static boolean insert(String insertStmt, Object... params) {
+	    boolean success = false;
+	    try (PreparedStatement pstmt = connection.prepareStatement(insertStmt)) {
+	        setParameters(pstmt, params);
+	        int rowsAffected = pstmt.executeUpdate();
+	        success = rowsAffected > 0;
+	    } catch (SQLException e) {
+	        System.err.print("Failed to execute insert statement");
+	        e.printStackTrace();
+	    }
+	    return success;
 	}
 	
 	/**
@@ -94,16 +124,17 @@ public class MySQL {
 	 * @param the MySQL statement
 	 * @return boolean if statement successfully executed
 	 */
-	public static boolean update(String updateStmt) {
-		boolean success = false;
-		try {
-			Statement statement = connection.createStatement();
-			int rowsaffected = statement.executeUpdate(updateStmt);
-			success = rowsaffected > 0;
-		} catch(SQLException e) {
-			System.err.print("Failed to update table");
-		}
-		return success;
+	public static boolean update(String updateStmt, Object... params) {
+	    boolean success = false;
+	    try (PreparedStatement pstmt = connection.prepareStatement(updateStmt)) {
+	        setParameters(pstmt, params);
+	        int rowsAffected = pstmt.executeUpdate();
+	        success = rowsAffected > 0;
+	    } catch (SQLException e) {
+	        System.err.print("Failed to execute update statement statement");
+	        e.printStackTrace();
+	    }
+	    return success;
 	}
 	
 	/**

@@ -18,8 +18,8 @@ public class CustomerDAO {
 	 * @return the customer that was found, null if no customer
 	 */
 	public static Customer findByUsername(String username) {
-		String query = "SELECT * FROM customers WHERE name = '"+username+"'";
-		ResultSet result = MySQL.fetch(query);
+		String query = "SELECT * FROM customers WHERE name = ?";
+		ResultSet result = MySQL.fetch(query,username);
 		Customer customer = null;
 		try {
 			result.next();
@@ -29,7 +29,7 @@ public class CustomerDAO {
 			String password = result.getString(3);
 			customer = new Customer(id, name, email,password);
 		} catch(SQLException e) {
-			System.err.print("This email doesent exist in our database, would you like to register?");
+			System.err.print("This username doesent exist in our database, would you like to register?");
 		}
 		return customer;
 	}
@@ -40,8 +40,8 @@ public class CustomerDAO {
 	 * @return the customer that was found, null if no customer
 	 */
 	public static Customer findByID (String customer_id) {
-		String query = "SELECT * FROM customers WHERE id = '"+customer_id+"'";
-		ResultSet result = MySQL.fetch(query);
+		String query = "SELECT * FROM customers WHERE id = ?";
+		ResultSet result = MySQL.fetch(query,customer_id);
 		Customer customer = null;
 		try {
 			result.next();
@@ -54,6 +54,7 @@ public class CustomerDAO {
 
 		} catch(SQLException e) {
 			System.err.print("This Customer identification does not exist?");
+			e.printStackTrace();
 		}
 		return customer;
 	}
@@ -64,8 +65,8 @@ public class CustomerDAO {
 	 * @return the customer that was found, null if no customer
 	 */
 	public static Customer findByEmail(String email) {
-		String query = "SELECT * FROM customers WHERE email = '"+email+"'";
-		ResultSet result = MySQL.fetch(query);
+		String query = "SELECT * FROM customers WHERE email = ?";
+		ResultSet result = MySQL.fetch(query,email);
 		Customer customer = null;
 		
 		try {
@@ -93,8 +94,8 @@ public class CustomerDAO {
 	 * @param password
 	 */
 	public static void insertRecord(String username, String email, String password) {
-		String query = "INSERT INTO customers(name, email, password) VALUES('"+username+"','"+email+"','"+password+"');";
-		MySQL.insert(query);
+		String query = "INSERT INTO customers(name, email, password) VALUES(?,?,?);";
+		MySQL.insert(query,username,email,password);
 		
 	}
 }

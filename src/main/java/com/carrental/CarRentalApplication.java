@@ -9,7 +9,7 @@ public class CarRentalApplication {
 		MySQL mysql = new MySQL();
 		mysql.Connect_to_MySQL_Database();
 		
-		CarRentalServer server = new CarRentalServer();
+		new CarRentalServer();
 		
 		
 	}

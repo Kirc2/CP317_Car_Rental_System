@@ -1,7 +1,5 @@
 package main.java.com.carrental.model;
 
-
-
 /**
  * Vehicle class model, mostly used to store information for use in another function
  */
@@ -42,12 +40,16 @@ public class Vehicle {
 		switch(typeS) {
 		case "SEDAN":
 			type = VehicleType.SEDAN;
+			break;
 		case "SUV":
 			type =  VehicleType.SUV;
+			break;
 		case "TRUCK":
 			type = VehicleType.TRUCK;
+			break;
 		case "CAR":
 			type = VehicleType.CAR;
+			break;
 		}
 		
 		return type;
