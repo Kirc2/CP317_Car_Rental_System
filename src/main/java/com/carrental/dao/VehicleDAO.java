@@ -2,21 +2,73 @@ package main.java.com.carrental.dao;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import main.java.com.carrental.model.Vehicle;
 import main.java.com.carrental.model.Vehicle.VehicleStatus;
 import main.java.com.carrental.model.Vehicle.VehicleType;
+import main.java.com.carrental.util.VehicleUtil;
 
 /**
  * Get all Vehicle info from this class, this
  * should be the only class that sends and
- * recieves data from the database
+ * receives data from the database
  */
 public class VehicleDAO {
 
 	public VehicleDAO() {
 		
+	}
+	/**
+	 * Master search function, will search from every single filter there is
+	 * @param type
+	 * @param startdate
+	 * @param endDate
+	 * @param price
+	 * @return list of specific vehicles searched
+	 */
+	public List<Vehicle> searchVehicle(Vehicle.VehicleType type, Vehicle.VehicleStatus status,LocalDateTime startDate, LocalDateTime endDate, int price, int year) {
+		StringBuilder sql = new StringBuilder("SELECT * FROM vehicles WHERE 1=1");
+		List<Object> params = new ArrayList<>();
+		
+		
+		 if (type != null) {
+		        sql.append(" AND type = ?");
+		        params.add(type);
+		 }
+		 if (startDate != null && endDate != null) {
+			    sql.append(" AND NOT EXISTS (SELECT 1 FROM rentals r WHERE r.vehicle_id = v.id AND r.status != 'CANCELLED' AND r.start_date < ? AND r.end_date > ?)");
+			    params.add(endDate);
+			    params.add(startDate);
+		 }
+		 
+		 if( status != null) {
+			 sql.append(" AND status = '?'");
+			 params.add(status);
+		 }
+		 if(year != 0) {
+			 sql.append(" AND year = '?'");
+			 params.add(year);
+		 }
+		 
+		 ResultSet result = MySQL.fetch(sql.toString(), params);
+		 List<Vehicle> vehicles = new ArrayList<>();
+		 
+		 try {
+			 while(result.next()) {
+				 Vehicle vec = new Vehicle(result.getString("id"), 
+						 result.getString("license_plate"),result.getString("make") , 
+						 result.getString("model"), result.getInt("year"), 
+						 result.getDouble("daily_rate"), VehicleUtil.getTypeFromString(result.getString("type")));
+				 vehicles.add(vec);
+			 }
+		 } catch(SQLException e) {
+			 
+		 }
+		 
+		 return vehicles;
+		 
 	}
 	
 	/**

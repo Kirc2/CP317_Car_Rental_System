@@ -31,30 +31,6 @@ public class Vehicle {
 		status = VehicleStatus.AVAILABLE;
 	}
 	
-	/**
-	 * Get type of vehicle from the string, mostly used to parse the databases response of enum vehicle_type
-	 * @param String type
-	 * @return VehicleType the enum vehicle type
-	 */
-	public VehicleType getTypeFromString(String typeS) {
-		switch(typeS) {
-		case "SEDAN":
-			type = VehicleType.SEDAN;
-			break;
-		case "SUV":
-			type =  VehicleType.SUV;
-			break;
-		case "TRUCK":
-			type = VehicleType.TRUCK;
-			break;
-		case "CAR":
-			type = VehicleType.CAR;
-			break;
-		}
-		
-		return type;
-	}
-	
 		
 	public String getId() {
 		return id;

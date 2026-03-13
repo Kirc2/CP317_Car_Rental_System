@@ -24,6 +24,7 @@ public class CarRentalServer {
 			server.createContext("/", new StaticFileHandler("public"));
 			server.createContext("/login", new LoginHandler());
 			server.createContext("/register", new RegisterHandler());
+			
 			server.setExecutor(null);
 			server.start();
 			System.out.println("Web server started on port http://localhost:8080");
