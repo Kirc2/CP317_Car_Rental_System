@@ -20,7 +20,6 @@ public class CustomerService {
 	 */
 	public Customer Login(String email,String rawPassword) {
 		Customer customer = CustomerDAO.findByEmail(email);
-		
 		if(customer == null) {
 			System.out.println("Could not find email in database");
 			return null;

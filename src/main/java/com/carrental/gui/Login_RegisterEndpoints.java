@@ -7,6 +7,7 @@ import com.sun.net.httpserver.HttpHandler;
 
 import main.java.com.carrental.model.Customer;
 import main.java.com.carrental.service.CustomerService;
+import main.java.com.carrental.util.HTTPUtils;
 import main.java.com.carrental.util.JSONUtil;
 
 public class Login_RegisterEndpoints {
@@ -21,13 +22,13 @@ public class Login_RegisterEndpoints {
 	        @Override
 	        public void handle(HttpExchange exchange) throws IOException {
 	            if (!"POST".equals(exchange.getRequestMethod())) {
-	            	JSONUtil.sendResponse(exchange, 405, "{\"error\":\"Method not allowed\"}");
+	            	JSONUtil.sendResponse(exchange, HTTPUtils.METHOD_NOT_ALLOWED, "{\"error\":\"Method not allowed\"}");
 	                return;
 	            }
 	            String body = JSONUtil.readBody(exchange);
 	            Customer customer = JSONUtil.parseCustomerFromJson(body);
 	            if (customer == null) {
-	            	JSONUtil.sendResponse(exchange, 400, "{\"error\":\"Invalid JSON\"}");
+	            	JSONUtil.sendResponse(exchange, HTTPUtils.INVALID_JSON, "{\"error\":\"Invalid JSON\"}");
 	                return;
 	            }
 	            try { 	
@@ -35,7 +36,7 @@ public class Login_RegisterEndpoints {
 	            	String jsonResponse = JSONUtil.customerToJson(customer);
 	                JSONUtil.sendResponse(exchange, 201, jsonResponse);
 	            } catch (Exception e) {
-	            	JSONUtil.sendResponse(exchange, 400, "{\"error\":\"" + JSONUtil.escapeJson(e.getMessage()) + "\"}");
+	            	JSONUtil.sendResponse(exchange, HTTPUtils.INVALID_JSON, "{\"error\":\"" + JSONUtil.escapeJson(e.getMessage()) + "\"}");
 	            }
 	        }
 	    }
@@ -48,21 +49,25 @@ public class Login_RegisterEndpoints {
 	        @Override
 	        public void handle(HttpExchange exchange) throws IOException {
 	            if (!"POST".equals(exchange.getRequestMethod())) {
-	                JSONUtil.sendResponse(exchange, 405, "{\"error\":\"Method not allowed\"}");
+	                JSONUtil.sendResponse(exchange, HTTPUtils.METHOD_NOT_ALLOWED, "{\"error\":\"Method not allowed\"}");
 	                return;
 	            }
 	            String body = JSONUtil.readBody(exchange);
 	            String email = JSONUtil.extractField(body, "email");
 	            String password = JSONUtil.extractField(body, "password");
 	            if (email == null || password == null) {
-	            	JSONUtil.sendResponse(exchange, 400, "{\"error\":\"Missing email or password\"}");
+	            	JSONUtil.sendResponse(exchange, HTTPUtils.INVALID_JSON, "{\"error\":\"Missing email or password\"}");
 	                return;
 	            }
 	            try {            	
 	                Customer customer = customerService.Login(email, password);
-	                JSONUtil.sendResponse(exchange, 200, JSONUtil.jsonifyString("Login Successful"));
+	                if(customer == null) {
+	                	JSONUtil.sendResponse(exchange, HTTPUtils.INCORRECT_CREDENTIALS, "Email or password incorrect, try again");
+	                } else {
+	                	JSONUtil.sendResponse(exchange, HTTPUtils.SUCCESSFUL_RESPONSE, JSONUtil.jsonifyString("Login Successful"));
+	                }
 	            } catch (Exception e) {
-	            	JSONUtil.sendResponse(exchange, 401, "{\"error\":\"" + JSONUtil.escapeJson(e.getMessage()) + "\"}");
+	            	JSONUtil.sendResponse(exchange, HTTPUtils.EXCEPTION_ERROR_RESPONSE, "{\"error\":\"" + JSONUtil.escapeJson(e.getMessage()) + "\"}");
 	            }
 	        }
 	    }

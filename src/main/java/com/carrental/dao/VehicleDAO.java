@@ -2,6 +2,7 @@ package main.java.com.carrental.dao;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -20,6 +21,7 @@ public class VehicleDAO {
 	public VehicleDAO() {
 		
 	}
+	
 	/**
 	 * Master search function, will search from every single filter there is
 	 * @param type
@@ -28,7 +30,7 @@ public class VehicleDAO {
 	 * @param price
 	 * @return list of specific vehicles searched
 	 */
-	public List<Vehicle> searchVehicle(Vehicle.VehicleType type, Vehicle.VehicleStatus status,LocalDateTime startDate, LocalDateTime endDate, int price, int year) {
+	public List<Vehicle> searchVehicle(Vehicle.VehicleType type, Vehicle.VehicleStatus status,LocalDate startDate, LocalDate endDate, int price, int year) {
 		StringBuilder sql = new StringBuilder("SELECT * FROM vehicles WHERE 1=1");
 		List<Object> params = new ArrayList<>();
 		
@@ -89,7 +91,7 @@ public class VehicleDAO {
 					vehicle.setYear(set.getInt("year"));
 					vehicle.setDailyRate(set.getDouble("daily_rate"));
 					String type = set.getString("vehicle_type");
-					vehicle.getTypeFromString(type);
+					vehicle.setType(VehicleUtil.getTypeFromString(type));
 					vehicles.add(vehicle);
 			}
 		} catch(SQLException e) {
@@ -116,7 +118,7 @@ public class VehicleDAO {
 				vehicle.setYear(set.getInt("year"));
 				vehicle.setDailyRate(set.getDouble("daily_rate"));
 				String type = set.getString("vehicle_type");
-				vehicle.getTypeFromString(type);
+				vehicle.setType(VehicleUtil.getTypeFromString(type));
 				vehicles.add(vehicle);
 			}
 		} catch(SQLException e) {
@@ -172,7 +174,7 @@ public class VehicleDAO {
 			vehicle.setYear(set.getInt("year"));
 			vehicle.setDailyRate(set.getDouble("daily_rate"));
 			String type = set.getString("vehicle_type");
-			vehicle.getTypeFromString(type);
+			vehicle.setType(VehicleUtil.getTypeFromString(type));
 			
 		} catch(SQLException e) {
 			System.out.println("Could not find SQL column");

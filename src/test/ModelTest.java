@@ -7,6 +7,7 @@ import main.java.com.carrental.model.Customer;
 import main.java.com.carrental.model.Payment;
 import main.java.com.carrental.model.Rental;
 import main.java.com.carrental.model.Vehicle;
+import main.java.com.carrental.util.VehicleUtil;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -176,11 +177,10 @@ public class ModelTest {
 
         @Test
         void testGetTypeFromString_fixed() {
-            Vehicle vehicle = new Vehicle();
-            assertEquals(Vehicle.VehicleType.SEDAN, vehicle.getTypeFromString("SEDAN"));
-            assertEquals(Vehicle.VehicleType.SUV, vehicle.getTypeFromString("SUV"));
-            assertEquals(Vehicle.VehicleType.TRUCK, vehicle.getTypeFromString("TRUCK"));
-            assertEquals(Vehicle.VehicleType.CAR, vehicle.getTypeFromString("CAR"));
+            assertEquals(Vehicle.VehicleType.SEDAN, VehicleUtil.getTypeFromString("SEDAN"));
+            assertEquals(Vehicle.VehicleType.SUV, VehicleUtil.getTypeFromString("SUV"));
+            assertEquals(Vehicle.VehicleType.TRUCK, VehicleUtil.getTypeFromString("TRUCK"));
+            assertEquals(Vehicle.VehicleType.CAR, VehicleUtil.getTypeFromString("CAR"));
         }
         
     }

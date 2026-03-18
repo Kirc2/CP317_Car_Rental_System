@@ -3,7 +3,6 @@ package main.java.com.carrental.service;
 import java.time.LocalDateTime;
 
 import main.java.com.carrental.dao.RentalDAO;
-import main.java.com.carrental.dao.VehicleDAO;
 import main.java.com.carrental.model.Customer;
 import main.java.com.carrental.model.Rental;
 import main.java.com.carrental.model.Vehicle;

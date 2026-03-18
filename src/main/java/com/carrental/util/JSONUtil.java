@@ -6,10 +6,13 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
+import java.util.List;
 
 import com.sun.net.httpserver.HttpExchange;
 
 import main.java.com.carrental.model.Customer;
+import main.java.com.carrental.model.Rental;
+import main.java.com.carrental.model.Vehicle;
 
 public class JSONUtil {
 	
@@ -159,6 +162,51 @@ public class JSONUtil {
     public static String escapeJson(String s) {
         if (s == null) return "";
         return s.replace("\\", "\\\\").replace("\"", "\\\"");
+    }
+    
+    public static String RentalsToJson(List<Rental> rentals) {
+    	 StringBuilder json = new StringBuilder("[");
+         for (int i = 0; i < rentals.size(); i++) {
+             Rental r = rentals.get(i);
+             json.append("{")
+                 .append("\"id\":").append(r.getRentalID()).append(",")
+                 .append("\"carName\":\"").append(JSONUtil.escapeJson(r.getVehicle().getMake() + " " + r.getVehicle().getModel() + " (" + r.getVehicle().getYear() + ")")).append("\",")
+                 .append("\"start\":\"").append(r.getPickupDate().toLocalDate()).append("\",")
+                 .append("\"end\":\"").append(r.getPlannedReturnDate().toLocalDate()).append("\",")
+                 .append("\"total\":").append(r.getTotalCost()).append(",")
+                 .append("\"status\":\"").append(r.getStatus().toString().toLowerCase()).append("\"")
+                 .append("}");
+             if (i < rentals.size() - 1) json.append(",");
+         }
+         json.append("]");
+         return json.toString();
+    }
+    
+    public static String VehiclesToJson(List<Vehicle> vehicles) {
+        if (vehicles == null || vehicles.isEmpty()) {
+            return "[]";
+        }
+
+        StringBuilder json = new StringBuilder("[");
+        for (int i = 0; i < vehicles.size(); i++) {
+            Vehicle v = vehicles.get(i);
+            // Build a JSON object for this vehicle
+            json.append("{");
+            json.append("\"id\":").append(v.getId()).append(",");
+            json.append("\"type\":\"").append(escapeJson(v.getType().name())).append("\",");
+            json.append("\"make\":\"").append(escapeJson(v.getMake())).append("\",");
+            json.append("\"model\":\"").append(escapeJson(v.getModel())).append("\",");
+            json.append("\"year\":").append(v.getYear()).append(",");
+            json.append("\"price\":").append(v.getDailyRate()).append(",");
+            json.append("\"status\":\"").append(escapeJson(v.getStatus().name())).append("\"");
+            json.append("}");
+
+            if (i < vehicles.size() - 1) {
+                json.append(",");
+            }
+        }
+        json.append("]");
+        return json.toString();
     }
 
 }

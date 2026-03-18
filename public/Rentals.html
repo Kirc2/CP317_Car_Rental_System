@@ -246,34 +246,7 @@
 
     </div>
 
-    <script>
-        const username = sessionStorage.getItem('username') || 'Guest';
-        document.getElementById('usernameDisplay').textContent = username;
-
-        function applyFilters() {
-            const filters = {
-                carType: document.getElementById('carType').value,
-                price:   document.getElementById('price').value,
-                seats:   document.getElementById('seats').value,
-                colour:  document.getElementById('colour').value,
-            };
-            console.log('Filters applied:', filters);
-            // sprint 3 task
-        }
-
-        function cancelBooking() {
-            const msg = document.getElementById('confirmMsg');
-            msg.style.display = 'block';
-            setTimeout(() => {
-                window.location.href = 'dashboard.html';
-            }, 2000);
-        }
-
-        function goToPayment() {
-            // sprint 3 task
-            window.location.href = 'payment.html';
-        }
-    </script>
+    <script src="js/rentals.js"></script>
 
 </body>
 </html>

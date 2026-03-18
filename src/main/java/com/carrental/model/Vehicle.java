@@ -31,6 +31,18 @@ public class Vehicle {
 		status = VehicleStatus.AVAILABLE;
 	}
 	
+	@Override
+	public String toString() {
+		StringBuilder string = new StringBuilder();
+		string.append(id.toString()+",");
+		string.append(licensePlate+",");
+		string.append(make+",");
+		string.append(model+",");
+		string.append(year+",");
+		string.append(dailyRate+",");
+		string.append(type);
+		return string.toString();
+	}
 		
 	public String getId() {
 		return id;

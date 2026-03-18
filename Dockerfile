@@ -4,6 +4,7 @@ FROM eclipse-temurin:17-jdk
 WORKDIR /
 
 COPY lib/mysql-connector-j-9.6.0.jar /lib
+COPY lib/javax.mail.jar /lib
 COPY src/main/java /src
 COPY public /public
 
