@@ -33,22 +33,6 @@ public class RentalDAO {
 	    return false;
 	}
 	
-	public List<Rental> getRentalsByCustomer(int customerId) {
-	    List<Rental> rentals = new ArrayList<>();
-	    String sql = "SELECT * FROM rentals WHERE customer_id = ? ORDER BY start_date DESC";
-	    ResultSet rs = MySQL.fetch(sql, customerId);
-	    try {
-	        while (rs != null && rs.next()) {
-	            Rental rental = mapRowToRental(rs);
-	            rentals.add(rental);
-	        }
-	    } catch (SQLException e) {
-	        e.printStackTrace();
-	    } finally {
-
-	    }
-	    return rentals;
-	}
 	
 	/**
 	 * Finds a list of current rentals using a vehicles Identification number, 
@@ -90,40 +74,26 @@ public class RentalDAO {
 	 * @param String customerID
 	 * @return
 	 */
-	public static List<Rental> findByCustomerID(String customerID) {
+	public List<Rental> findByCustomerID(String customerID) {
 		List<Rental> rentals = new ArrayList<Rental>();
 		String query = "SELECT * FROM rentals WHERE customer_id = ?";
 		ResultSet result = MySQL.fetch(query, customerID);
 		
 		try {
-			while(result.next()) {
-				String id = result.getString("id");
-			    String vec_id = result.getString("vehicle_id");
-			    String customer_id = customerID;
-			    LocalDateTime start_date = result.getTimestamp("start_date").toLocalDateTime();
-			    LocalDateTime end_date = result.getTimestamp("end_date").toLocalDateTime();
-			    double total_cost = result.getDouble("total_cost");
-			    
-			    Rental rental = new Rental();
-			    rental.setRentalID(id);
-			    rental.setVehicle(VehicleDAO.findByID(vec_id));
-			    rental.setCustomer(CustomerDAO.findByID(customer_id));
-			    rental.setPickupDate(start_date);
-			    rental.setPlannedReturnDate(end_date);
-			    rental.setTotalCost(total_cost);
-			    rentals.add(rental);
-			}	    
-		  
-		} catch(SQLException e) {
-			System.err.print("Rental doesent exist");
-		}
+	        while (result != null && result.next()) {
+	            Rental rental = mapRowToRental(result);
+	            rentals.add(rental);
+	        }
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
 		return rentals;
 	}
 	
 	/**
 	 * Helper function to map the row that was obtained by MySQL to a Rental object
 	 * @param rs
-	 * @return
+	 * @return rental object
 	 * @throws SQLException
 	 */
 	private Rental mapRowToRental(ResultSet rs) throws SQLException {
@@ -133,7 +103,6 @@ public class RentalDAO {
         rental.setCustomer(CustomerDAO.findByID(rs.getString("customer_id")));
         rental.setPickupDate(rs.getObject("start_date", LocalDateTime.class));
         rental.setPlannedReturnDate(rs.getObject("end_date", LocalDateTime.class));
-        rental.setStatus(Rental.RentalStatus.valueOf(rs.getString("status")));
         return rental;
     }
 
@@ -148,7 +117,6 @@ public class RentalDAO {
 	    List<Rental> overlapping = new ArrayList<>();
 	    try {
 	        int vehicleId = Integer.parseInt(vehicleIdStr);
-	        // Correct overlap condition without status filter
 	        String query = "SELECT * FROM rentals WHERE vehicle_id = ? AND start_date < ? AND end_date > ?";
 	        ResultSet rs = MySQL.fetch(query, vehicleId, proposedEnd, proposedStart);
 	        if (rs == null) return overlapping;
@@ -178,6 +146,4 @@ public class RentalDAO {
 							rental.getTotalCost());
 	}
 
-	
-	
 }

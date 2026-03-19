@@ -7,6 +7,7 @@ import com.sun.net.httpserver.HttpHandler;
 
 import main.java.com.carrental.model.Customer;
 import main.java.com.carrental.service.CustomerService;
+import main.java.com.carrental.service.PersistentData;
 import main.java.com.carrental.util.HTTPUtils;
 import main.java.com.carrental.util.JSONUtil;
 
@@ -66,6 +67,7 @@ public class Login_RegisterEndpoints {
 	                } else {
 	                	JSONUtil.sendResponse(exchange, HTTPUtils.SUCCESSFUL_RESPONSE, JSONUtil.jsonifyString("Login Successful"));
 	                }
+	                PersistentData.setCustomer(customer);
 	            } catch (Exception e) {
 	            	JSONUtil.sendResponse(exchange, HTTPUtils.EXCEPTION_ERROR_RESPONSE, "{\"error\":\"" + JSONUtil.escapeJson(e.getMessage()) + "\"}");
 	            }

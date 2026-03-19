@@ -16,9 +16,9 @@ public class Rental {
 	private RentalStatus status;
 	private Payment payment;
 	
-	public enum RentalStatus {RESERVED, ACTIVE, COMPLETED, CANCELLED}
+	public enum RentalStatus {RESERVED, ACTIVE, COMPLETED, CANCELLED};
 	
-	
+	public Rental() {}
 	
 	public String getRentalID() {
 		return rentalID;

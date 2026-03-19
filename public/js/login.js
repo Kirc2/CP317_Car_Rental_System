@@ -21,13 +21,26 @@ async function login(credentials) {
         body: JSON.stringify(credentials)
     });
 
-    if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.error || 'Login failed');
+
+      if (!response.ok) {
+        if (response.status === 410) {
+            throw new Error("Incorrect Credentials from user");
+        } else {
+            // For other errors, attempt to get the server's error message
+            let errorMsg = "Login failed";
+            try {
+                const errorData = await response.json();
+                errorMsg = errorData.error || errorMsg;
+            } catch (e) {
+                errorMsg = response.statusText || errorMsg;
+            }
+            throw new Error(errorMsg);
+        }
+    } else {
+        const user = await response.json();
+        localStorage.setItem('currentUser', JSON.stringify(user));
+        return user;
     }
-    const user = await response.json();
-    localStorage.setItem('currentUser', JSON.stringify(user));
-    return user;
 }
 
 document.addEventListener("DOMContentLoaded", function () {
@@ -51,9 +64,11 @@ document.addEventListener("DOMContentLoaded", function () {
                 const user = await login(credentials);
                 sessionStorage.setItem('username', user.name || username);
                 window.location.href = '/dashboard.html';
-            } catch (err) {
-                alert('Login failed: ' + err.message);
+            } catch(err) {
+                alert(err.message);
             }
+
+
         } else {
             // --- REGISTER ---
             const username = document.querySelector("#registerDisplay #username").value;

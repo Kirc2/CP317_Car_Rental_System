@@ -24,10 +24,10 @@ public class CarRentalServer {
 			server.createContext("/", new StaticFileHandler("public"));
 			server.createContext("/login", new LoginHandler());
 			server.createContext("/register", new RegisterHandler());
-			server.createContext("/Editprofile", new ProfileEndpoints());
-			server.createContext("/History", new RentalHistoryEndpoints());
-			server.createContext("/Payment", new PaymentEndpoints());
-			server.createContext("/Rentals", new VehicleSearchEndpoints());
+			server.createContext("/edit_profile", new ProfileEndpoints());
+			server.createContext("/history", new RentalHistoryEndpoints());
+			server.createContext("/payment", new PaymentEndpoints());
+			server.createContext("/rentals", new VehicleSearchEndpoints());
 			server.setExecutor(null);
 			server.start();
 			System.out.println("Web server started, access page at : http://localhost:8080");

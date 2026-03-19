@@ -28,6 +28,8 @@ import static org.junit.jupiter.api.Assertions.*;
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class DAOTest {
 
+	RentalDAO rentalDao = new RentalDAO();
+	
     @BeforeAll
     static void connectToDatabase() {
         MySQL mysql = new MySQL();
@@ -253,7 +255,7 @@ public class DAOTest {
         rental.setTotalCost(180.00);
 
         RentalDAO.insertRecord(rental);
-        List<Rental> rentallist = RentalDAO.findByCustomerID(rental.getCustomer().getCustomerID());
+        List<Rental> rentallist = rentalDao.findByCustomerID(rental.getCustomer().getCustomerID());
         assertNotNull(rentallist);
         assertFalse(rentallist.isEmpty());
 

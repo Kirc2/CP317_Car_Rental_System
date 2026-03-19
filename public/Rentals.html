@@ -198,12 +198,10 @@
         </div>
 
         <div class="filter-group">
-            <label>Price</label>
-            <select id="price">
-                <option value="">All Prices</option>
-                <option value="low-high">Lowest to Highest</option>
-                <option value="high-low">Highest to Lowest</option>
-            </select>
+            <label>Daily Rate Limit</label>
+            <input type="text" id="price">
+                
+            </input>
         </div>
 
         <div class="filter-group">
@@ -232,9 +230,14 @@
         <button class="apply-btn" onclick="applyFilters()">Apply Filters</button>
 
         
-        <div class="listings-placeholder">
-             Car listings will be a sprint 3 task
-        </div>
+		<div class="history-box">
+			<div class="history-box">
+			    <h2>Your Past Rentals</h2>
+			    <div id="rental-list"></div> <!-- dynamic cards will be inserted here -->
+			    <button class="back-btn" onclick="window.location.href='dashboard.html'">← Back to Dashboard</button>
+			</div>
+
+		</div>
 
         <p class="confirm-msg" id="confirmMsg">Booking cancelled. Returning to dashboard...</p>
 

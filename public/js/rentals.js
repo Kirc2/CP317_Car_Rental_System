@@ -1,4 +1,3 @@
-const API_BASE_URL = '/rentals'; 
 
 // Wait for the DOM to be fully loaded before running initialisation code.
 document.addEventListener('DOMContentLoaded', function() {
@@ -10,7 +9,7 @@ function applyFilters() {
 	const carType = document.getElementById('carType').value;
 	const startDate = document.getElementById('startDate').value;
 	const endDate = document.getElementById('endDate').value;
-	const priceSort = document.getElementById('price').value; // rename to match backend
+	const pricelimit = document.getElementById('price').value; // rename to match backend
 	const year = document.getElementById('Year').value;
 	const colour = document.getElementById('colour').value;
 
@@ -19,11 +18,11 @@ function applyFilters() {
 	if (carType) body.carType = carType;
 	if (startDate) body.startDate = startDate;
 	if (endDate) body.endDate = endDate;
-	if (priceSort) body.priceSort = priceSort; // backend expects this field name
+	if (pricelimit) body.pricelimit = pricelimit; // backend expects this field name
 	if (year) body.year = year;
 	if (colour) body.colour = colour;
 
-	fetch(API_BASE_URL, {
+	fetch("http://localhost:8080/rentals", {
 	    method: 'POST',
 	    headers: {
 	        'Content-Type': 'application/json'
@@ -36,7 +35,7 @@ function applyFilters() {
 	})
 	.then(data => {
 	    console.log('Filtered rentals:', data);
-	    // TODO: render listings
+
 	})
 	.catch(error => {
 	    console.error('Error:', error);

@@ -173,8 +173,7 @@ public class JSONUtil {
                  .append("\"carName\":\"").append(JSONUtil.escapeJson(r.getVehicle().getMake() + " " + r.getVehicle().getModel() + " (" + r.getVehicle().getYear() + ")")).append("\",")
                  .append("\"start\":\"").append(r.getPickupDate().toLocalDate()).append("\",")
                  .append("\"end\":\"").append(r.getPlannedReturnDate().toLocalDate()).append("\",")
-                 .append("\"total\":").append(r.getTotalCost()).append(",")
-                 .append("\"status\":\"").append(r.getStatus().toString().toLowerCase()).append("\"")
+                 .append("\"total\":\"").append(r.getTotalCost()).append("\"")
                  .append("}");
              if (i < rentals.size() - 1) json.append(",");
          }

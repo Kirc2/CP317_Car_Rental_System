@@ -33,13 +33,12 @@ public class VehicleSearchEndpoints implements HttpHandler{
 	    String carTypeStr = JSONUtil.extractField(body, "carType");
 	    String startDateStr = JSONUtil.extractField(body, "startDate");
 	    String endDateStr = JSONUtil.extractField(body, "endDate");
-	    String priceSort = JSONUtil.extractField(body, "priceSort");  // now a string
+	    String priceSort = JSONUtil.extractField(body, "priceSort");
 	    String yearStr = JSONUtil.extractField(body, "year");
 	    String colour = JSONUtil.extractField(body, "colour");
 
-	    // Convert to appropriate types (handle empty strings)
 	    VehicleType type = (carTypeStr != null && !carTypeStr.isEmpty()) 
-	                       ? VehicleUtil.getTypeFromString(carTypeStr) : null;
+	                       ? VehicleUtil.getTypeFromString(carTypeStr.toUpperCase()) : null;
 	    LocalDate startDate = (startDateStr != null && !startDateStr.isEmpty()) 
 	                          ? LocalDate.parse(startDateStr) : null;
 	    LocalDate endDate = (endDateStr != null && !endDateStr.isEmpty()) 
@@ -48,16 +47,14 @@ public class VehicleSearchEndpoints implements HttpHandler{
 	               ? Integer.parseInt(yearStr) : 0;
 
 	    try {
-	        // Assuming your DAO method can handle nulls for optional filters
 	        List<Vehicle> vehicles = vecDAO.searchVehicle(type, VehicleStatus.AVAILABLE, 
-	                                                       startDate, endDate, year, 0);
+	                                                       startDate, endDate, 0, year);
 
-	        // Convert the list to a JSON array
 	        String jsonResponse = JSONUtil.VehiclesToJson(vehicles);
+	        System.out.println(jsonResponse);
 	        JSONUtil.sendResponse(exchange, HTTPUtils.SUCCESSFUL_RESPONSE, jsonResponse);
-
 	    } catch (Exception e) {
-	        e.printStackTrace(); // log the error for debugging
+	        e.printStackTrace();
 	        JSONUtil.sendResponse(exchange, HTTPUtils.UNEXPECTED_SERVER_ERROR, 
 	                              "{\"error\":\"Unexpected error occurred\"}");
 	    }

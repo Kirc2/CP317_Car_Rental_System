@@ -1,5 +1,6 @@
 package main.java.com.carrental.util;
 
+import main.java.com.carrental.model.Vehicle.VehicleStatus;
 import main.java.com.carrental.model.Vehicle.VehicleType;
 
 public class VehicleUtil {
@@ -27,6 +28,22 @@ public class VehicleUtil {
 		}
 		
 		return type;
+	}
+	
+	public static VehicleStatus getStatusFromString(String statusS) {
+		VehicleStatus vecstat = null;
+		switch(statusS) {
+		case "AVAILABLE":
+			vecstat = VehicleStatus.AVAILABLE;
+			break;
+		case "RENTED":
+			vecstat = VehicleStatus.RENTED;
+			break;
+		case "MAINTENANCE":
+			vecstat = VehicleStatus.MAINTENANCE;
+			break;
+		}
+		return vecstat;
 	}
 	
 }

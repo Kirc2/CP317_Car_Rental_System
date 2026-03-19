@@ -121,36 +121,15 @@
     <div class="title">Rental History</div>
 
     <div class="history-box">
-        <h2>Your Past Rentals</h2>
+		<div class="history-box">
+		    <h2>Your Past Rentals</h2>
+		    <div id="rental-list"></div> <!-- dynamic cards will be inserted here -->
+		    <button class="back-btn" onclick="window.location.href='dashboard.html'">← Back to Dashboard</button>
+		</div>
 
-        <div class="rental-card">
-            <div class="car-name"> Toyota Camry (2022)</div>
-            <div class="detail"> Start: Jan 10, 2026</div>
-            <div class="detail"> End: Jan 15, 2026</div>
-            <div class="detail"> Total: $250.00</div>
-            <span class="status completed">Completed</span>
-        </div>
-
-        <div class="rental-card">
-            <div class="car-name"> Ford Explorer (2023)</div>
-            <div class="detail"> Start: Feb 3, 2026</div>
-            <div class="detail"> End: Feb 7, 2026</div>
-            <div class="detail"> Total: $320.00</div>
-            <span class="status completed">Completed</span>
-        </div>
-
-        <div class="rental-card">
-            <div class="car-name"> Honda Civic (2021)</div>
-            <div class="detail"> Start: Mar 1, 2026</div>
-            <div class="detail"> End: Mar 3, 2026</div>
-            <div class="detail"> Total: $90.00</div>
-            <span class="status cancelled">Cancelled</span>
-        </div>
-
-        <button class="back-btn" onclick="window.location.href='dashboard.html'">← Back to Dashboard</button>
     </div>
 
-    <script src="history.js"> </script>
+    <script src="js/history.js"> </script>
 
 </body>
 </html>

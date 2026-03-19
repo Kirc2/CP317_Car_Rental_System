@@ -9,7 +9,7 @@ CREATE TABLE vehicles (
 	year INT,
 	daily_rate DECIMAL(10,2),
 	vehicle_type enum('SEDAN', 'SUV', 'TRUCK', 'CAR'),
-	status enum('AVAILABLE', 'RENTED', 'MAINTENANCE') DEFAULT 'AVAILABLE'
+	car_status enum('AVAILABLE', 'RENTED', 'MAINTENANCE') DEFAULT 'AVAILABLE'
 );
 
 CREATE TABLE customers(
@@ -34,14 +34,14 @@ CREATE TABLE rentals(
 
 -- TEST DATA
 -- Insert 10 vehicles
-INSERT INTO vehicles (license_plate, make, model, year, daily_rate, vehicle_type, status) VALUES
-('ABC-123', 'Toyota', 'Camry', 2022, 45.00, 'SEDAN', 'AVAILABLE'),
+INSERT INTO vehicles (license_plate, make, model, year, daily_rate, vehicle_type, car_status) VALUES
+('ABC-123', 'Toyota', 'Camry', 2026, 45.00, 'SEDAN', 'AVAILABLE'),
 ('DEF-456', 'Honda', 'Civic', 2023, 40.00, 'SEDAN', 'AVAILABLE'),
-('GHI-789', 'Ford', 'Explorer', 2021, 70.00, 'SUV', 'AVAILABLE'),
-('JKL-012', 'Jeep', 'Wrangler', 2020, 80.00, 'SUV', 'AVAILABLE'),
-('MNO-345', 'Ford', 'F-150', 2022, 90.00, 'TRUCK', 'AVAILABLE'),
-('PQR-678', 'Ram', '1500', 2023, 95.00, 'TRUCK', 'AVAILABLE'),
-('STU-901', 'Chevrolet', 'Malibu', 2021, 42.00, 'SEDAN', 'AVAILABLE'),
+('GHI-789', 'Ford', 'Explorer', 2025, 70.00, 'SUV', 'AVAILABLE'),
+('JKL-012', 'Jeep', 'Wrangler', 2026, 80.00, 'SUV', 'AVAILABLE'),
+('MNO-345', 'Ford', 'F-150', 2026, 90.00, 'TRUCK', 'AVAILABLE'),
+('PQR-678', 'Ram', '1500', 2026, 95.00, 'TRUCK', 'AVAILABLE'),
+('STU-901', 'Chevrolet', 'Malibu', 2026, 42.00, 'SEDAN', 'AVAILABLE'),
 ('VWX-234', 'Toyota', 'RAV4', 2022, 65.00, 'SUV', 'AVAILABLE'),
 ('YZA-567', 'Nissan', 'Versa', 2020, 35.00, 'CAR', 'AVAILABLE'),
 ('BCD-890', 'Hyundai', 'Elantra', 2023, 38.00, 'SEDAN', 'AVAILABLE');
