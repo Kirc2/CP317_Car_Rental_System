@@ -6,6 +6,11 @@ import main.java.com.carrental.model.Customer;
 import main.java.com.carrental.model.Rental;
 import main.java.com.carrental.model.Vehicle;
 
+/**
+ * All business related processes that deals with the customer
+ * such as vehicle reservation
+ */
+
 public class RentalService {
 
 	/**

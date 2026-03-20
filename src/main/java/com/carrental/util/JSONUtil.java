@@ -97,7 +97,7 @@ public class JSONUtil {
         exchange.getResponseHeaders().set("Content-Type", "application/json");
         exchange.sendResponseHeaders(statusCode, response.getBytes(StandardCharsets.UTF_8).length);
         try (OutputStream os = exchange.getResponseBody()) {
-            System.out.println("POST "+ response.getBytes(StandardCharsets.UTF_8));
+            System.out.println("POST "+ response);
             os.write(response.getBytes(StandardCharsets.UTF_8));
         }
     }
@@ -127,11 +127,9 @@ public class JSONUtil {
         String name = extractField(json, "name");
         String email = extractField(json, "email");
         String password = extractField(json, "password");
-
         if (name == null || email == null || password == null) {
             return null;
         }
-
         Customer customer = new Customer();
         customer.setCustomerName(name);
         customer.setEmail(email);
@@ -163,7 +161,11 @@ public class JSONUtil {
         if (s == null) return "";
         return s.replace("\\", "\\\\").replace("\"", "\\\"");
     }
-    
+    /**
+     * return a list of rentals to its json string format
+     * @param a list of rentals to translate
+     * @return String of json
+     */
     public static String RentalsToJson(List<Rental> rentals) {
     	 StringBuilder json = new StringBuilder("[");
          for (int i = 0; i < rentals.size(); i++) {
@@ -181,6 +183,11 @@ public class JSONUtil {
          return json.toString();
     }
     
+    /**
+     * return a list of vehicles to its json string format
+     * @param a list of vehicles to translate
+     * @return String of json
+     */
     public static String VehiclesToJson(List<Vehicle> vehicles) {
         if (vehicles == null || vehicles.isEmpty()) {
             return "[]";
@@ -189,14 +196,13 @@ public class JSONUtil {
         StringBuilder json = new StringBuilder("[");
         for (int i = 0; i < vehicles.size(); i++) {
             Vehicle v = vehicles.get(i);
-            // Build a JSON object for this vehicle
             json.append("{");
             json.append("\"id\":").append(v.getId()).append(",");
             json.append("\"type\":\"").append(escapeJson(v.getType().name())).append("\",");
             json.append("\"make\":\"").append(escapeJson(v.getMake())).append("\",");
             json.append("\"model\":\"").append(escapeJson(v.getModel())).append("\",");
             json.append("\"year\":").append(v.getYear()).append(",");
-            json.append("\"price\":").append(v.getDailyRate()).append(",");
+            json.append("\"dailyrate\":").append(v.getDailyRate()).append(",");
             json.append("\"status\":\"").append(escapeJson(v.getStatus().name())).append("\"");
             json.append("}");
 

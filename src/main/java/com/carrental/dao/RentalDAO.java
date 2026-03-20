@@ -10,21 +10,23 @@ import main.java.com.carrental.model.Rental;
 /**
  * Get all Rental info from this class, this
  * should be the only class that sends and
- * recieves data from the database
+ * receive data from the database
  */
 public class RentalDAO {
 
-	public boolean cancelRental(int rentalId) {
+	/**
+	 * @param rentalId
+	 * @return true if successful, false if error occured
+	 */
+	public boolean cancelRental(String rentalId) {
 	    String sqlUpdateRental = "UPDATE rentals SET status = 'CANCELLED' WHERE rental_id = ? AND status != 'CANCELLED'";
 	    String sqlUpdateVehicle = "UPDATE vehicles SET status = 'AVAILABLE' WHERE vehicle_id = (SELECT vehicle_id FROM rentals WHERE rental_id = ?)";
-	    String insertNote = "INSERT INTO rental_notes (rental_id, note, created_at) VALUES (?, 'Cancelled by customer', NOW())";
 
 	    try {
 	        // Use transaction if possible (assuming MySQL.update supports it)
 	        boolean rentalUpdated = MySQL.update(sqlUpdateRental, rentalId);
 	        if (rentalUpdated) {
 	            MySQL.update(sqlUpdateVehicle, rentalId);
-	            MySQL.insert(insertNote, rentalId);
 	            return true;
 	        }
 	    } catch (Exception e) {
@@ -103,6 +105,7 @@ public class RentalDAO {
         rental.setCustomer(CustomerDAO.findByID(rs.getString("customer_id")));
         rental.setPickupDate(rs.getObject("start_date", LocalDateTime.class));
         rental.setPlannedReturnDate(rs.getObject("end_date", LocalDateTime.class));
+        rental.setTotalCost(rs.getDouble("total_cost"));
         return rental;
     }
 

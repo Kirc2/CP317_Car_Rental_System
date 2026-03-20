@@ -1,3 +1,7 @@
+<!--Rentals search. Handles filters and dynamically creates cards 
+	based on filters. Endpoint of VehicleSearchEndpoints.java -->
+
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -154,6 +158,36 @@
         .payment-btn:hover {
             background-color: #ddd;
         }
+		
+		.rental-card {
+		            background-color: #f9f9f7;
+		            border-radius: 12px;
+		            padding: 16px 20px;
+		            display: flex;
+		            flex-direction: column;
+		            gap: 6px;
+		        }
+
+		        .rental-card .car-name {
+		            font-size: 16px;
+		            font-weight: bold;
+		            color: #333;
+		        }
+
+		        .rental-card .detail {
+		            font-size: 14px;
+		            color: #555;
+		        }
+
+		        .rental-card .status {
+		            font-size: 13px;
+		            font-weight: bold;
+		            padding: 4px 10px;
+		            border-radius: 20px;
+		            display: inline-block;
+		            margin-top: 4px;
+		            width: fit-content;
+		        }
 
         /* Confirmation message */
         .confirm-msg {
@@ -230,11 +264,9 @@
         <button class="apply-btn" onclick="applyFilters()">Apply Filters</button>
 
         
-		<div class="history-box">
-			<div class="history-box">
-			    <h2>Your Past Rentals</h2>
-			    <div id="rental-list"></div> <!-- dynamic cards will be inserted here -->
-			    <button class="back-btn" onclick="window.location.href='dashboard.html'">← Back to Dashboard</button>
+		<div class=".filterBox">
+			<div class=".filterBox">
+			    <div id="filtered-list"></div> <!-- dynamic cards will be inserted here -->
 			</div>
 
 		</div>

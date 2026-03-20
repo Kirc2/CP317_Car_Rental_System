@@ -2,12 +2,9 @@ package main.java.com.carrental.gui;
 
 import java.io.IOException;
 import java.time.LocalDate;
-import java.util.Comparator;
 import java.util.List;
-
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
-
 import main.java.com.carrental.dao.VehicleDAO;
 import main.java.com.carrental.model.Vehicle;
 import main.java.com.carrental.model.Vehicle.VehicleStatus;
@@ -16,8 +13,11 @@ import main.java.com.carrental.util.HTTPUtils;
 import main.java.com.carrental.util.JSONUtil;
 import main.java.com.carrental.util.VehicleUtil;
 
+/**
+ * Class that handles the vehicle search page will return JSON depending on the filters given by the page.
+ * Endpoint is at Rentals.html
+ */
 public class VehicleSearchEndpoints implements HttpHandler{
-
 
 	@Override
 	public void handle(HttpExchange exchange) throws IOException {
@@ -33,7 +33,7 @@ public class VehicleSearchEndpoints implements HttpHandler{
 	    String carTypeStr = JSONUtil.extractField(body, "carType");
 	    String startDateStr = JSONUtil.extractField(body, "startDate");
 	    String endDateStr = JSONUtil.extractField(body, "endDate");
-	    String priceSort = JSONUtil.extractField(body, "priceSort");
+	    String priceSort = JSONUtil.extractField(body, "pricelimit");
 	    String yearStr = JSONUtil.extractField(body, "year");
 	    String colour = JSONUtil.extractField(body, "colour");
 
@@ -51,7 +51,6 @@ public class VehicleSearchEndpoints implements HttpHandler{
 	                                                       startDate, endDate, 0, year);
 
 	        String jsonResponse = JSONUtil.VehiclesToJson(vehicles);
-	        System.out.println(jsonResponse);
 	        JSONUtil.sendResponse(exchange, HTTPUtils.SUCCESSFUL_RESPONSE, jsonResponse);
 	    } catch (Exception e) {
 	        e.printStackTrace();

@@ -22,11 +22,17 @@ public class CarRentalServer {
 		try {
 			HttpServer server = HttpServer.create(new InetSocketAddress(8080), 0);
 			server.createContext("/", new StaticFileHandler("public"));
+			// ENDPOINT AT login.html
 			server.createContext("/login", new LoginHandler());
+			// ENDPOINT AT login.html
 			server.createContext("/register", new RegisterHandler());
+			// ENDPOINT AT Editprofile.html
 			server.createContext("/edit_profile", new ProfileEndpoints());
+			// ENDPOINT AT History.html
 			server.createContext("/history", new RentalHistoryEndpoints());
+			// ENDPOINT AT Payment.html
 			server.createContext("/payment", new PaymentEndpoints());
+			// ENDPOINT AT Rentals.html
 			server.createContext("/rentals", new VehicleSearchEndpoints());
 			server.setExecutor(null);
 			server.start();

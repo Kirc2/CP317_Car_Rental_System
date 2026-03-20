@@ -7,11 +7,20 @@ import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
+/*
+ * Only used to send emails to clients, thats it
+ */
 public class EmailUtil {
 	
 	final static String fromAddr = "noreply@carrental.com";
 	final static String smtpHost = "smtp.gmail.com";
 	
+	/**
+	 * sends an email to given recipient
+	 * @param recipient's Email
+	 * @param subject of email
+	 * @param body of email
+	 */
 	public static void sendEmail(String recipientEmail, String subject, String body) {
 		
 		Properties props = new Properties();

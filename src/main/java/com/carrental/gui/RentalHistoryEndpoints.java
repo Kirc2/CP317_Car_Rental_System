@@ -14,7 +14,7 @@ import main.java.com.carrental.util.JSONUtil;
 
 /**
  * Endpoints for rental history view. Gets the customers rental history based on their id
- * 
+ * Endpoint is at History.html
  */
 public class RentalHistoryEndpoints implements HttpHandler{
 
@@ -22,7 +22,6 @@ public class RentalHistoryEndpoints implements HttpHandler{
 
     @Override
     public void handle(HttpExchange exchange) throws IOException {
-    	System.out.println("HistoryHandler: received " + exchange.getRequestMethod() + " request for " + exchange.getRequestURI());
         if (!"GET".equals(exchange.getRequestMethod())) {
             JSONUtil.sendResponse(exchange, HTTPUtils.METHOD_NOT_ALLOWED, "{\"error\":\"Method not allowed\"}");
             return;

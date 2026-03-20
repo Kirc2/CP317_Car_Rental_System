@@ -10,7 +10,6 @@ import com.sun.net.httpserver.HttpHandler;
 
 /**
  * Handles static .html files for the webserver
- * 
  */
 public class StaticFileHandler implements HttpHandler {
 

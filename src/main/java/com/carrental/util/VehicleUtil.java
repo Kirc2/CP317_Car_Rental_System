@@ -29,7 +29,11 @@ public class VehicleUtil {
 		
 		return type;
 	}
-	
+	/**
+	 * Get status of vehicle from string type to enum type used to parse database and json response
+	 * @param String status
+	 * @return VehicleStatus enum
+	 */
 	public static VehicleStatus getStatusFromString(String statusS) {
 		VehicleStatus vecstat = null;
 		switch(statusS) {

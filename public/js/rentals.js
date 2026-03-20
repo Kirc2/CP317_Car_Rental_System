@@ -5,7 +5,7 @@ document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('usernameDisplay').textContent = username;
 });
 
-function applyFilters() {
+async function applyFilters() {
 	const carType = document.getElementById('carType').value;
 	const startDate = document.getElementById('startDate').value;
 	const endDate = document.getElementById('endDate').value;
@@ -30,12 +30,40 @@ function applyFilters() {
 	    body: JSON.stringify(body)
 	})
 	.then(response => {
-	    if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+	    if (!response.ok) {
+	        throw new Error(`HTTP error! status: ${response.status}`);
+	    }
 	    return response.json();
 	})
-	.then(data => {
-	    console.log('Filtered rentals:', data);
+	.then(rentals => {
+	    const container = document.getElementById("filtered-list");
+	    if (!container) {
+	        console.error("Container #rental-list not found!");
+	        return;
+	    }
 
+	    // Clear any loading message or static content
+	    container.innerHTML = '';
+
+	    if (rentals.length === 0) {
+	        container.innerHTML = '<div class=".listings-placeholder">No Cars Found</div>';
+	        return;
+	    }
+
+	    // Loop through each rental and create a card
+	    rentals.forEach(rental => {
+	        const card = document.createElement("div");
+	        card.className = "rental-card";
+	        
+
+	        card.innerHTML = `
+				<div class="ID">Vehicle ID: ${rental.id}</div>
+	            <div class="type">Type : ${rental.type}</div>
+				<div class="name">Name : ${rental.make}  ${rental.model}  ${rental.year}</div>
+				<div class="price">Daily Rate : ${rental.dailyrate}</div>
+	            <div class="status">Current Status : ${rental.status}</div>`;
+	        container.appendChild(card);
+		});
 	})
 	.catch(error => {
 	    console.error('Error:', error);
@@ -47,7 +75,7 @@ function applyFilters() {
  * Handle the Cancel Booking action.
  * Displays a confirmation message and redirects to the dashboard after a short delay.
  */
-function cancelBooking() {
+async function cancelBooking() {
     const confirmMsg = document.getElementById('confirmMsg');
     confirmMsg.style.display = 'block'; 
 
@@ -61,7 +89,7 @@ function cancelBooking() {
  * In a real implementation, you might first validate that a car is selected,
  * then pass the selected car details via query parameters or session storage.
  */
-function goToPayment() {
+async function goToPayment() {
 
     window.location.href = 'payment.html';
 }

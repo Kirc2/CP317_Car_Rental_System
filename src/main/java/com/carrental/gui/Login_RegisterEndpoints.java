@@ -17,7 +17,7 @@ public class Login_RegisterEndpoints {
 	
 	/**
 	 * Class to handle what happens when the user wants to register, calls methods from
-	 * CustomerDAO in order to insert records in the database
+	 * CustomerDAO in order to insert records in the database. Endpoint is at login.html
 	 */
 	  public static class RegisterHandler implements HttpHandler {
 	        @Override
@@ -44,7 +44,7 @@ public class Login_RegisterEndpoints {
 
 	    /**
 	     * Class to handle a client logging in, will pull records from the MySQL database
-	     * in order to verify the client
+	     * in order to verify the client. Endpoint is at login.html
 	     */
 	    public static class LoginHandler implements HttpHandler {
 	        @Override

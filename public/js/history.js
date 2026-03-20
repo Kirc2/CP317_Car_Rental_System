@@ -1,6 +1,5 @@
 document.addEventListener("DOMContentLoaded", function() {
 
-   
     // Fetch rental history from backend
     fetch("http://localhost:8080/history")
         .then(response => {

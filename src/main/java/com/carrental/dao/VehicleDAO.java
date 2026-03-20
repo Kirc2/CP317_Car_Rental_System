@@ -50,15 +50,15 @@ public class VehicleDAO {
 		}
 
 		if (price > 0) {
-			sql.append(" AND v.daily_rate <= ?"); // assuming max price
+			sql.append(" AND v.daily_rate <= ?");
 			params.add(price);
 		}
 
 		if (startDate != null && endDate != null) {
 			sql.append(
 					" AND NOT EXISTS (SELECT 1 FROM rentals r WHERE r.vehicle_id = v.id AND r.start_date < ? AND r.end_date > ?)");
-			params.add(endDate); // proposed end
-			params.add(startDate); // proposed start
+			params.add(endDate);
+			params.add(startDate);
 		}
 
 		ResultSet rs = MySQL.fetch(sql.toString(), params.toArray());

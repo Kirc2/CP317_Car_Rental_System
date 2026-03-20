@@ -1,5 +1,8 @@
 package main.java.com.carrental.util;
 
+/*
+ * Mostly used for HTTP status codes
+ */
 public class HTTPUtils {
 	
 	// ERROR CODES

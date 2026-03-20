@@ -5,7 +5,7 @@ import main.java.com.carrental.model.Customer;
 import main.java.com.carrental.util.SecurePasswordHasher;
 
 /**
- * All buisness related processes that deals with the customer
+ * All business related processes that deals with the customer
  * such as login and registration
  */
 public class CustomerService {
