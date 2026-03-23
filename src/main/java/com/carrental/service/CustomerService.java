@@ -31,8 +31,6 @@ public class CustomerService {
 		}
 		return customer;
 	}
-	
-	
 	/**
 	 * 
 	 * Function to register, will insert a new record into the database

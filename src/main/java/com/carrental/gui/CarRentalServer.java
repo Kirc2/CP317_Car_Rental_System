@@ -5,6 +5,8 @@ import java.net.InetSocketAddress;
 import com.sun.net.httpserver.HttpServer;
 import main.java.com.carrental.gui.Login_RegisterEndpoints.LoginHandler;
 import main.java.com.carrental.gui.Login_RegisterEndpoints.RegisterHandler;
+import main.java.com.carrental.gui.ReservationHandler.GETSVehicleInfo;
+import main.java.com.carrental.gui.ReservationHandler.Reserve;
 
 /**
  * Handles the frontend to backend endpoints, it spins up a server off of port 8080
@@ -34,6 +36,11 @@ public class CarRentalServer {
 			server.createContext("/payment", new PaymentEndpoints());
 			// ENDPOINT AT Rentals.html
 			server.createContext("/rentals", new VehicleSearchEndpoints());
+			// ENDPOINT AT Reservation.html
+			server.createContext("/getvehicleinfo", new GETSVehicleInfo());
+			
+			server.createContext("/reserve", new Reserve());
+
 			server.setExecutor(null);
 			server.start();
 			System.out.println("Web server started, access page at : http://localhost:8080");

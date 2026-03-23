@@ -35,6 +35,33 @@ public class RentalDAO {
 	    return false;
 	}
 	
+	public Rental findByID(String ID) {
+		String query = "SELECT * FROM rentals WHERE id = ?";
+		ResultSet result = MySQL.fetch(query, ID);
+		try {
+			while(result.next()) {
+				String id = result.getString("id");
+			    String vec_id = result.getString("vehicle_id");
+			    String customer_id = result.getString("customer_id");
+			    LocalDateTime start_date = result.getTimestamp("start_date").toLocalDateTime();
+			    LocalDateTime end_date = result.getTimestamp("end_date").toLocalDateTime();
+			    double total_cost = result.getDouble("total_cost");
+			    
+			    Rental rental = new Rental();
+			    rental.setRentalID(id);
+			    rental.setVehicle(VehicleDAO.findByID(vec_id));
+			    rental.setCustomer(CustomerDAO.findByID(customer_id));
+			    rental.setPickupDate(start_date);
+			    rental.setPlannedReturnDate(end_date);
+			    rental.setTotalCost(total_cost);
+			    return rental;
+			}
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
 	
 	/**
 	 * Finds a list of current rentals using a vehicles Identification number, 

@@ -7,6 +7,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
+import java.util.Map;
 
 import com.sun.net.httpserver.HttpExchange;
 
@@ -99,6 +100,7 @@ public class JSONUtil {
         try (OutputStream os = exchange.getResponseBody()) {
             System.out.println("POST "+ response);
             os.write(response.getBytes(StandardCharsets.UTF_8));
+            os.close();
         }
     }
 
@@ -184,6 +186,29 @@ public class JSONUtil {
     }
     
     /**
+     * return a vehicle to its json string format
+     * @param a vehicles to translate
+     * @return String of json
+     */
+    public static String VehicleToJson(Vehicle vehicles) {
+    	if (vehicles == null) {
+            return "[]";
+        }
+        StringBuilder json = new StringBuilder();
+        json.append("{");
+        json.append("\"id\":").append(vehicles.getId()).append(",");
+        json.append("\"type\":\"").append(escapeJson(vehicles.getType().name())).append("\",");
+        json.append("\"make\":\"").append(escapeJson(vehicles.getMake())).append("\",");
+        json.append("\"model\":\"").append(escapeJson(vehicles.getModel())).append("\",");
+        json.append("\"year\":").append(vehicles.getYear()).append(",");
+        json.append("\"dailyrate\":").append(vehicles.getDailyRate()).append(",");
+        json.append("\"status\":\"").append(escapeJson(vehicles.getStatus().name())).append("\"");
+        json.append("}");
+
+        return json.toString();
+    }
+    
+    /**
      * return a list of vehicles to its json string format
      * @param a list of vehicles to translate
      * @return String of json
@@ -212,6 +237,37 @@ public class JSONUtil {
         }
         json.append("]");
         return json.toString();
+    }
+    
+    public static String mapToJson(Map<String, Object> map) {
+        StringBuilder sb = new StringBuilder("{");
+        int i = 0;
+        for (Map.Entry<String, Object> entry : map.entrySet()) {
+            if (i++ > 0) sb.append(",");
+            sb.append("\"").append(escapeJson(entry.getKey())).append("\":");
+            Object val = entry.getValue();
+            if (val == null) {
+                sb.append("null");
+            } else if (val instanceof String) {
+                sb.append("\"").append(escapeJson((String) val)).append("\"");
+            } else if (val instanceof Number) {
+                sb.append(val);
+            } else {
+                sb.append("\"").append(escapeJson(val.toString())).append("\"");
+            }
+        }
+        sb.append("}");
+        return sb.toString();
+    }
+
+    public static String listMapToJson(List<Map<String, Object>> list) {
+        StringBuilder sb = new StringBuilder("[");
+        for (int i = 0; i < list.size(); i++) {
+            if (i > 0) sb.append(",");
+            sb.append(mapToJson(list.get(i)));
+        }
+        sb.append("]");
+        return sb.toString();
     }
 
 }

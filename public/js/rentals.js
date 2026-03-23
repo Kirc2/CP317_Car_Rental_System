@@ -51,18 +51,19 @@ async function applyFilters() {
 	    }
 
 	    // Loop through each rental and create a card
-	    rentals.forEach(rental => {
-	        const card = document.createElement("div");
-	        card.className = "rental-card";
-	        
+		rentals.forEach(rental => {
+		    const link = document.createElement('a');
+		    link.href = `/Reservations.html?id=${rental.id}`;
+		    link.className = 'rental-card';
 
-	        card.innerHTML = `
-				<div class="ID">Vehicle ID: ${rental.id}</div>
-	            <div class="type">Type : ${rental.type}</div>
-				<div class="name">Name : ${rental.make}  ${rental.model}  ${rental.year}</div>
-				<div class="price">Daily Rate : ${rental.dailyrate}</div>
-	            <div class="status">Current Status : ${rental.status}</div>`;
-	        container.appendChild(card);
+		    link.innerHTML = `
+		        <div class="ID">Vehicle ID: ${rental.id}</div>
+		        <div class="type">Type : ${rental.type}</div>
+		        <div class="name">Name : ${rental.make}  ${rental.model}  ${rental.year}</div>
+		        <div class="price">Daily Rate : ${rental.dailyrate}</div>
+		        <div class="status">Current Status : ${rental.status}</div>
+		    `;
+		    container.appendChild(link);
 		});
 	})
 	.catch(error => {

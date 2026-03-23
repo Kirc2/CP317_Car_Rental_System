@@ -1,4 +1,3 @@
-// Register function
 async function register(userData) {
     const response = await fetch("http://localhost:8080/register", {
         method: 'POST',
@@ -13,7 +12,7 @@ async function register(userData) {
     return await response.json();
 }
 
-// Login function (already present)
+
 async function login(credentials) {
     const response = await fetch("http://localhost:8080/login", {
         method: 'POST',
@@ -26,7 +25,6 @@ async function login(credentials) {
         if (response.status === 410) {
             throw new Error("Incorrect Credentials from user");
         } else {
-            // For other errors, attempt to get the server's error message
             let errorMsg = "Login failed";
             try {
                 const errorData = await response.json();

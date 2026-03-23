@@ -1,17 +1,13 @@
 package main.java.com.carrental.gui;
 
 import java.io.IOException;
-import java.time.LocalDate;
 import java.util.List;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
-import main.java.com.carrental.dao.VehicleDAO;
 import main.java.com.carrental.model.Vehicle;
-import main.java.com.carrental.model.Vehicle.VehicleStatus;
-import main.java.com.carrental.model.Vehicle.VehicleType;
+import main.java.com.carrental.service.VehicleService;
 import main.java.com.carrental.util.HTTPUtils;
 import main.java.com.carrental.util.JSONUtil;
-import main.java.com.carrental.util.VehicleUtil;
 
 /**
  * Class that handles the vehicle search page will return JSON depending on the filters given by the page.
@@ -19,47 +15,23 @@ import main.java.com.carrental.util.VehicleUtil;
  */
 public class VehicleSearchEndpoints implements HttpHandler{
 
+	VehicleService vecService = new VehicleService();
+	
 	@Override
 	public void handle(HttpExchange exchange) throws IOException {
 	    if (!"POST".equals(exchange.getRequestMethod())) {
 	        JSONUtil.sendResponse(exchange, HTTPUtils.METHOD_NOT_ALLOWED, "{\"error\":\"Method not allowed\"}");
 	        return;
 	    }
-
-	    VehicleDAO vecDAO = new VehicleDAO();
 	    String body = JSONUtil.readBody(exchange);
-
-	    // Extract fields from JSON
-	    String carTypeStr = JSONUtil.extractField(body, "carType");
-	    String startDateStr = JSONUtil.extractField(body, "startDate");
-	    String endDateStr = JSONUtil.extractField(body, "endDate");
-	    String priceSort = JSONUtil.extractField(body, "pricelimit");
-	    String yearStr = JSONUtil.extractField(body, "year");
-	    String colour = JSONUtil.extractField(body, "colour");
-
-	    VehicleType type = (carTypeStr != null && !carTypeStr.isEmpty()) 
-	                       ? VehicleUtil.getTypeFromString(carTypeStr.toUpperCase()) : null;
-	    LocalDate startDate = (startDateStr != null && !startDateStr.isEmpty()) 
-	                          ? LocalDate.parse(startDateStr) : null;
-	    LocalDate endDate = (endDateStr != null && !endDateStr.isEmpty()) 
-	                        ? LocalDate.parse(endDateStr) : null;
-	    int year = (yearStr != null && !yearStr.isEmpty()) 
-	               ? Integer.parseInt(yearStr) : 0;
-
 	    try {
-	        List<Vehicle> vehicles = vecDAO.searchVehicle(type, VehicleStatus.AVAILABLE, 
-	                                                       startDate, endDate, 0, year);
-
+	        List<Vehicle> vehicles = vecService.getVehiclesFromFilters(body);
 	        String jsonResponse = JSONUtil.VehiclesToJson(vehicles);
 	        JSONUtil.sendResponse(exchange, HTTPUtils.SUCCESSFUL_RESPONSE, jsonResponse);
 	    } catch (Exception e) {
 	        e.printStackTrace();
 	        JSONUtil.sendResponse(exchange, HTTPUtils.UNEXPECTED_SERVER_ERROR, 
 	                              "{\"error\":\"Unexpected error occurred\"}");
-	    }
-		
-		
+	    }		
 	}
-
-
 }

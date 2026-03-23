@@ -2,10 +2,8 @@ package main.java.com.carrental.gui;
 
 import java.io.IOException;
 import java.util.List;
-
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
-
 import main.java.com.carrental.dao.RentalDAO;
 import main.java.com.carrental.model.Rental;
 import main.java.com.carrental.service.PersistentData;

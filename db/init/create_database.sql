@@ -28,8 +28,19 @@ CREATE TABLE rentals(
     start_date DATETIME,
     end_date DATETIME,
     total_cost DECIMAL(10,2),
+    rental_status enum('RESERVED', 'ACTIVE', 'COMPLETED', 'CANCELLED'),
     FOREIGN KEY(vehicle_id) REFERENCES vehicles(id),
     FOREIGN KEY(customer_id) REFERENCES customers(id)
+);
+
+CREATE TABLE payments (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    rental_id INT NOT NULL,
+    amount DECIMAL(10,2) NOT NULL,
+    status ENUM('PENDING', 'COMPLETED', 'FAILED', 'REFUNDED') DEFAULT 'PENDING',
+    transaction_id VARCHAR(100),
+    payment_date DATETIME,
+    FOREIGN KEY (rental_id) REFERENCES rentals(id)
 );
 
 -- TEST DATA

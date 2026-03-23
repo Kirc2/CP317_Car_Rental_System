@@ -35,7 +35,7 @@ public class Login_RegisterEndpoints {
 	            try { 	
 	            	customerService.Register(customer);
 	            	String jsonResponse = JSONUtil.customerToJson(customer);
-	                JSONUtil.sendResponse(exchange, 201, jsonResponse);
+	                JSONUtil.sendResponse(exchange, HTTPUtils.SUCCESSFUL_REGISTRATION, jsonResponse);
 	            } catch (Exception e) {
 	            	JSONUtil.sendResponse(exchange, HTTPUtils.INVALID_JSON, "{\"error\":\"" + JSONUtil.escapeJson(e.getMessage()) + "\"}");
 	            }
@@ -65,7 +65,7 @@ public class Login_RegisterEndpoints {
 	                if(customer == null) {
 	                	JSONUtil.sendResponse(exchange, HTTPUtils.INCORRECT_CREDENTIALS, "Email or password incorrect, try again");
 	                } else {
-	                	JSONUtil.sendResponse(exchange, HTTPUtils.SUCCESSFUL_RESPONSE, JSONUtil.jsonifyString("Login Successful"));
+	                	JSONUtil.sendResponse(exchange, HTTPUtils.SUCCESSFUL_LOGIN, JSONUtil.jsonifyString("Login Successful"));
 	                }
 	                PersistentData.setCustomer(customer);
 	            } catch (Exception e) {
