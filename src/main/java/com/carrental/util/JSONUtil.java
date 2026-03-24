@@ -8,6 +8,8 @@ import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import com.sun.net.httpserver.HttpExchange;
 
@@ -111,11 +113,16 @@ public class JSONUtil {
      * @return the information taken from said field
      */
     public static String extractField(String json, String fieldName) {
-        String pattern = "\"" + fieldName + "\"\\s*:\\s*\"([^\"]*)\"";
-        java.util.regex.Pattern p = java.util.regex.Pattern.compile(pattern);
-        java.util.regex.Matcher m = p.matcher(json);
+        String pattern = "\"" + fieldName + "\"\\s*:\\s*(\"[^\"]*\"|\\d+(?:\\.\\d+)?|true|false|null)";
+        Pattern p = Pattern.compile(pattern);
+        Matcher m = p.matcher(json);
         if (m.find()) {
-            return m.group(1);
+            String value = m.group(1);
+            // Remove surrounding quotes if present
+            if (value.startsWith("\"") && value.endsWith("\"")) {
+                value = value.substring(1, value.length() - 1);
+            }
+            return value;
         }
         return null;
     }
@@ -175,8 +182,8 @@ public class JSONUtil {
              json.append("{")
                  .append("\"id\":").append(r.getRentalID()).append(",")
                  .append("\"carName\":\"").append(JSONUtil.escapeJson(r.getVehicle().getMake() + " " + r.getVehicle().getModel() + " (" + r.getVehicle().getYear() + ")")).append("\",")
-                 .append("\"start\":\"").append(r.getPickupDate().toLocalDate()).append("\",")
-                 .append("\"end\":\"").append(r.getPlannedReturnDate().toLocalDate()).append("\",")
+                 .append("\"start\":\"").append(r.getPickupDate()).append("\",")
+                 .append("\"end\":\"").append(r.getPlannedReturnDate()).append("\",")
                  .append("\"total\":\"").append(r.getTotalCost()).append("\"")
                  .append("}");
              if (i < rentals.size() - 1) json.append(",");
@@ -269,5 +276,6 @@ public class JSONUtil {
         sb.append("]");
         return sb.toString();
     }
+    
 
 }

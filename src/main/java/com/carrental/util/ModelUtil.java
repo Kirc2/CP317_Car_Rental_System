@@ -1,9 +1,10 @@
 package main.java.com.carrental.util;
 
+import main.java.com.carrental.model.Rental.RentalStatus;
 import main.java.com.carrental.model.Vehicle.VehicleStatus;
 import main.java.com.carrental.model.Vehicle.VehicleType;
 
-public class VehicleUtil {
+public class ModelUtil {
 
 	/**
 	 * Get type of vehicle from the string, mostly used to parse the databases response of enum vehicle_type
@@ -34,7 +35,7 @@ public class VehicleUtil {
 	 * @param String status
 	 * @return VehicleStatus enum
 	 */
-	public static VehicleStatus getStatusFromString(String statusS) {
+	public static VehicleStatus getVehicleStatusFromString(String statusS) {
 		VehicleStatus vecstat = null;
 		switch(statusS) {
 		case "AVAILABLE":
@@ -48,6 +49,40 @@ public class VehicleUtil {
 			break;
 		}
 		return vecstat;
+	}
+	
+	public static String RentalStatusToString(RentalStatus rs) {
+		switch(rs) {
+			case RESERVED:
+				return "RESERVED";
+			case ACTIVE:
+				return "ACTIVE";
+			case COMPLETED:
+				return "COMPLETED";
+			case CANCELLED:
+				return "CANCELLED";
+			}
+		return null;
+	}
+	
+	public static RentalStatus getRentalStatusFromString(String status) {
+		RentalStatus statusnum = null;
+		switch(status) {
+		case "RESERVED":
+			statusnum = RentalStatus.RESERVED;
+			break;
+		case "ACTIVE":
+			statusnum = RentalStatus.ACTIVE;
+			break;
+		case "COMPLETED":
+			statusnum = RentalStatus.COMPLETED;
+			break;
+		case "CANCELLED":
+			statusnum = RentalStatus.CANCELLED;
+			break;
+		}
+		
+		return statusnum;
 	}
 	
 }

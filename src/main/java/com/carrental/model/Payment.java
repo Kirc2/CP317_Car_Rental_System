@@ -1,6 +1,6 @@
 package main.java.com.carrental.model;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 public class Payment {
 	
@@ -9,7 +9,7 @@ public class Payment {
     private double amount;
     private PaymentStatus status;
     private String transactionId;
-    private LocalDateTime paymentDate;
+    private LocalDate paymentDate;
 
     public enum PaymentStatus {
         PENDING, COMPLETED, FAILED, REFUNDED
@@ -18,7 +18,7 @@ public class Payment {
     // Constructors, getters, setters
     public Payment() {}
 
-    public Payment(int rentalId, double amount, PaymentStatus status, String transactionId, LocalDateTime paymentDate) {
+    public Payment(int rentalId, double amount, PaymentStatus status, String transactionId, LocalDate paymentDate) {
         this.rentalId = rentalId;
         this.amount = amount;
         this.status = status;
@@ -41,6 +41,6 @@ public class Payment {
     public String getTransactionId() { return transactionId; }
     public void setTransactionId(String transactionId) { this.transactionId = transactionId; }
 
-    public LocalDateTime getPaymentDate() { return paymentDate; }
-    public void setPaymentDate(LocalDateTime paymentDate) { this.paymentDate = paymentDate; }
+    public LocalDate getPaymentDate() { return paymentDate; }
+    public void setPaymentDate(LocalDate paymentDate) { this.paymentDate = paymentDate; }
 }

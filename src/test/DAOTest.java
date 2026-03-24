@@ -16,7 +16,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 
 import java.sql.*;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -60,14 +60,14 @@ public class DAOTest {
     }
 
     private void insertRental(String vehiclePlate, String customerEmail, 
-        LocalDateTime start, LocalDateTime end, double cost) {
+        LocalDate start, LocalDate end, double cost) {
 		int vehicleId = getVehicleIdByPlate(vehiclePlate);
 		int customerId = getCustomerIdByEmail(customerEmail);
 		String sql = "INSERT INTO rentals (vehicle_id, customer_id, start_date, end_date, total_cost) " +
 		   "VALUES (?, ?, ?, ?, ?)";
 		assertTrue(MySQL.insert(sql, vehicleId, customerId, 
-		              java.sql.Timestamp.valueOf(start), 
-		              java.sql.Timestamp.valueOf(end), 
+		              java.sql.Timestamp.valueOf(start.toString()), 
+		              java.sql.Timestamp.valueOf(end.toString()), 
 		              cost), 
 		 "Failed to insert rental");
     }
@@ -122,8 +122,8 @@ public class DAOTest {
         insertVehicle("XYZ-789", "Honda", "Civic", 2023, 50.00, "SEDAN", "AVAILABLE");
         insertCustomer("alice@example.com", "Alice", "555-1234", "LIC123");
         insertRental("ABC-123", "alice@example.com",
-                LocalDateTime.of(2025, 3, 1, 10, 0),
-                LocalDateTime.of(2025, 3, 5, 10, 0),
+                LocalDate.of(2025, 3, 1),
+                LocalDate.of(2025, 3, 5),
                 200.00);
         VehicleDAO vehicleDAO = new VehicleDAO();
         List<Vehicle> available = vehicleDAO.findAvailableVehicles();
@@ -209,14 +209,14 @@ public class DAOTest {
         insertVehicle("XYZ-789", "Honda", "Civic", 2023, 50.00, "SEDAN", "AVAILABLE");
         insertCustomer("alice@example.com", "Alice", "555-1234", "LIC123");
         insertRental("XYZ-789", "alice@example.com",
-                LocalDateTime.of(2025, 3, 1, 10, 0),
-                LocalDateTime.of(2025, 3, 5, 10, 0),
+                LocalDate.of(2025, 3, 1),
+                LocalDate.of(2025, 3, 5),
                 200.00);
 
         RentalDAO rentalDAO = new RentalDAO();
         String vehicleId = String.valueOf(getVehicleIdByPlate("XYZ-789"));
-        LocalDateTime start = LocalDateTime.of(2025, 3, 2, 12, 0);
-        LocalDateTime end   = LocalDateTime.of(2025, 3, 4, 12, 0);
+        LocalDate start = LocalDate.of(2025, 3, 2);
+        LocalDate end   = LocalDate.of(2025, 3, 4);
 
         List<Rental> overlapping = rentalDAO.findOverlappingRentals(vehicleId, start, end);
         assertEquals(1, overlapping.size());
@@ -227,13 +227,13 @@ public class DAOTest {
         insertVehicle("XYZ-789", "Honda", "Civic", 2023, 50.00, "SEDAN", "AVAILABLE");
         insertCustomer("alice@example.com", "Alice", "555-1234", "LIC123");
         insertRental("XYZ-789", "alice@example.com",
-                LocalDateTime.of(2025, 3, 1, 10, 0),
-                LocalDateTime.of(2025, 3, 5, 10, 0),
+                LocalDate.of(2025, 3, 1),
+                LocalDate.of(2025, 3, 5),
                 200.00);
 
         RentalDAO rentalDAO = new RentalDAO();
-        LocalDateTime start = LocalDateTime.of(2025, 3, 6, 10, 0);
-        LocalDateTime end = LocalDateTime.of(2025, 3, 7, 10, 0);
+        LocalDate start = LocalDate.of(2025, 3, 6);
+        LocalDate end = LocalDate.of(2025, 3, 7);
 
         List<Rental> overlapping = rentalDAO.findOverlappingRentals(
                 String.valueOf(getVehicleIdByPlate("XYZ-789")), start, end);
@@ -250,8 +250,8 @@ public class DAOTest {
         Rental rental = new Rental();
         rental.setVehicle(VehicleDAO.findByID(Integer.toString(vehicleId)));
         rental.setCustomer(CustomerDAO.findByID(Integer.toString(customerId)));
-        rental.setPickupDate(LocalDateTime.of(2025, 4, 1, 9, 0));
-        rental.setPlannedReturnDate(LocalDateTime.of(2025, 4, 5, 9, 0));
+        rental.setPickupDate(LocalDate.of(2025, 4, 1));
+        rental.setPlannedReturnDate(LocalDate.of(2025, 4, 5));
         rental.setTotalCost(180.00);
 
         RentalDAO.insertRecord(rental);

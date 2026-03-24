@@ -1,6 +1,7 @@
 package main.java.com.carrental.model;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
+import java.time.LocalDate;
 
 /**
  * Rental class model, mostly used to store information for use in another function
@@ -9,16 +10,16 @@ public class Rental {
 	private String rentalID;
 	private Customer customer;
 	private Vehicle vehicle;
-	private LocalDateTime pickupDate;
-	private LocalDateTime plannedReturnDate;
-	private LocalDateTime actualReturnDate;
+	private LocalDate pickupDate;
+	private LocalDate plannedReturnDate;
+	private LocalDate actualReturnDate;
 	private double totalCost;
 	private RentalStatus status;
 	private Payment payment;
 	
 	public enum RentalStatus {RESERVED, ACTIVE, COMPLETED, CANCELLED};
 	
-	public Rental() {}
+	public Rental() {}	
 	
 	public String getRentalID() {
 		return rentalID;
@@ -44,27 +45,27 @@ public class Rental {
 		this.vehicle = vehicle;
 	}
 
-	public LocalDateTime getPickupDate() {
+	public LocalDate getPickupDate() {
 		return pickupDate;
 	}
 
-	public void setPickupDate(LocalDateTime pickupDate) {
+	public void setPickupDate(LocalDate pickupDate) {
 		this.pickupDate = pickupDate;
 	}
 
-	public LocalDateTime getPlannedReturnDate() {
+	public LocalDate getPlannedReturnDate() {
 		return plannedReturnDate;
 	}
 
-	public void setPlannedReturnDate(LocalDateTime plannedReturnDate) {
+	public void setPlannedReturnDate(LocalDate plannedReturnDate) {
 		this.plannedReturnDate = plannedReturnDate;
 	}
 
-	public LocalDateTime getActualReturnDate() {
+	public LocalDate getActualReturnDate() {
 		return actualReturnDate;
 	}
 
-	public void setActualReturnDate(LocalDateTime actualReturnDate) {
+	public void setActualReturnDate(LocalDate actualReturnDate) {
 		this.actualReturnDate = actualReturnDate;
 	}
 

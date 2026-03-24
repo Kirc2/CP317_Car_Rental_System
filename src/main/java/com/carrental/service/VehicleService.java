@@ -8,7 +8,7 @@ import main.java.com.carrental.model.Vehicle;
 import main.java.com.carrental.model.Vehicle.VehicleStatus;
 import main.java.com.carrental.model.Vehicle.VehicleType;
 import main.java.com.carrental.util.JSONUtil;
-import main.java.com.carrental.util.VehicleUtil;
+import main.java.com.carrental.util.ModelUtil;
 
 public class VehicleService {
 	
@@ -29,7 +29,7 @@ public class VehicleService {
 	    //String colour = JSONUtil.extractField(vehicleFilters, "colour");
 
 	    VehicleType type = (carTypeStr != null && !carTypeStr.isEmpty()) 
-	                       ? VehicleUtil.getTypeFromString(carTypeStr.toUpperCase()) : null;
+	                       ? ModelUtil.getTypeFromString(carTypeStr.toUpperCase()) : null;
 	    LocalDate startDate = (startDateStr != null && !startDateStr.isEmpty()) 
 	                          ? LocalDate.parse(startDateStr) : null;
 	    LocalDate endDate = (endDateStr != null && !endDateStr.isEmpty()) 

@@ -60,8 +60,8 @@ public class PaymentDAO {
 	        payment.setAmount(rs.getDouble("amount"));
 	        payment.setStatus(Payment.PaymentStatus.valueOf(rs.getString("status")));
 	        payment.setTransactionId(rs.getString("transaction_id"));
-	        java.sql.Timestamp ts = rs.getTimestamp("payment_date");
-	        if (ts != null) payment.setPaymentDate(ts.toLocalDateTime());
+	        java.sql.Date ts = rs.getDate("payment_date");
+	        if (ts != null) payment.setPaymentDate(ts.toLocalDate());
 	        return payment;
 	    }
 }

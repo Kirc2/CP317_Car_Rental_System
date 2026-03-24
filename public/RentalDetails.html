@@ -2,9 +2,9 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Car Rental - Rental History</title>
+    <title>Car Rental - Rental Details</title>
     <style>
-     * {
+        * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
@@ -34,7 +34,7 @@
         }
 
         .container {
-            max-width: 800px;
+            max-width: 600px;
             width: 100%;
             background-color: #B35A00;
             border-radius: 20px;
@@ -42,87 +42,83 @@
             color: white;
         }
 
-        h2 {
+        h1 {
             text-align: center;
             margin-bottom: 24px;
-            font-size: 24px;
+            font-size: 28px;
         }
 
-        .rental-card {
-            background-color: #f9f9f7;
-            border-radius: 12px;
-            padding: 16px 20px;
-            margin-bottom: 16px;
+        .detail-row {
             display: flex;
-            flex-direction: column;
-            gap: 8px;
-            transition: transform 0.1s, box-shadow 0.2s;
+            justify-content: space-between;
+            padding: 12px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.3);
+            font-size: 16px;
         }
 
-        .rental-card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-        }
-
-        .car-name {
-            font-size: 18px;
+        .detail-label {
             font-weight: bold;
-            color: #333;
         }
 
-        .detail {
-            font-size: 14px;
-            color: #555;
-        }
-
-        .total {
+        .status {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
             font-weight: bold;
-            color: #2c7a2c;
+        }
+        .status-active {
+            background-color: #28a745;
+            color: white;
+        }
+        .status-cancelled {
+            background-color: #dc3545;
+            color: white;
+        }
+        .status-completed {
+            background-color: #6c757d;
+            color: white;
         }
 
         .button-group {
             display: flex;
-            justify-content: flex-end;
-            margin-top: 8px;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .cancel-btn, .back-btn {
+            padding: 12px 24px;
+            font-size: 16px;
+            font-weight: bold;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
         }
 
         .cancel-btn {
             background-color: #dc3545;
             color: white;
-            border: none;
-            padding: 8px 16px;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 14px;
-            transition: background-color 0.2s;
         }
-
         .cancel-btn:hover {
             background-color: #c82333;
         }
 
         .back-btn {
-            display: inline-block;
             background-color: transparent;
             color: white;
             border: 1.5px solid white;
-            padding: 10px 20px;
-            border-radius: 8px;
-            text-decoration: none;
-            text-align: center;
-            margin-top: 20px;
-            transition: background-color 0.2s;
         }
-
         .back-btn:hover {
             background-color: rgba(255,255,255,0.15);
         }
 
-        .no-history, .error {
+        .loading, .error {
             text-align: center;
-            font-size: 16px;
-            padding: 20px;
-            color: white;
+            font-size: 18px;
+            margin-top: 40px;
         }
     </style>
 </head>
@@ -130,15 +126,18 @@
     <div class="welcome">
         Welcome, <span id="usernameDisplay">User</span>
     </div>
+
     <div class="container">
-        <h2>Your Rental History</h2>
-        <div id="rental-list">
-            <div class="no-history">Loading rental history...</div>
+        <h1>Rental Details</h1>
+        <div id="details-container">
+            <div class="loading">Loading rental details...</div>
         </div>
-        <div style="text-align: center;">
-            <a href="dashboard.html" class="back-btn">← Back to Dashboard</a>
+        <div class="button-group">
+            <a href="History.html" class="back-btn">← Back to History</a>
+            <button id="cancelBtn" class="cancel-btn" style="display: none;">Cancel Reservation</button>
         </div>
     </div>
-	
-<script src="js/history.js"> </script>
-	
+
+    <script src="js/rental_details.js"> </script>
+</body>
+</html>

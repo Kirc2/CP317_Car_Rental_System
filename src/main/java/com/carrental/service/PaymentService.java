@@ -1,6 +1,6 @@
 package main.java.com.carrental.service;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 import main.java.com.carrental.dao.PaymentDAO;
 import main.java.com.carrental.dao.RentalDAO;
@@ -31,7 +31,7 @@ public class PaymentService {
         payment.setRentalId(rentalId);
         payment.setAmount(rental.getTotalCost());
         payment.setStatus(Payment.PaymentStatus.PENDING);
-        payment.setPaymentDate(LocalDateTime.now());
+        payment.setPaymentDate(LocalDate.now());
 
         // Simulate gateway call
         PaymentGatewaySimulator.PaymentResult gatewayResult = PaymentGatewaySimulator.simulatePayment(cardNumber, rental.getTotalCost());

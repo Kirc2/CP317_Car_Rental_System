@@ -86,7 +86,7 @@ async function fetchVehicleDetails(id) {
 }
 
 
-function reserveVehicle(vehicle) {
+async function reserveVehicle(vehicle) {
     // Store the selected vehicle in sessionStorage for the payment page
     sessionStorage.setItem('selectedVehicle', JSON.stringify(vehicle));
 	const startDate = document.getElementById('rentalStartDate').value;
@@ -96,18 +96,10 @@ function reserveVehicle(vehicle) {
 	    return;
 	}
 
-	// Get user ID from sessionStorage (make sure you store it after login)
-	const userId = sessionStorage.getItem('userId');
-	if (!userId) {
-	    alert('User not logged in. Please log in again.');
-	    window.location.href = 'login.html'; 
-	    return;
-	}
 
 	// Build reservation payload
 	const reservation = {
-	    vehicleId: vehicle.id,
-	    userId: parseInt(userId),
+	    id: vehicle.id,
 	    startDate: startDate,
 	    endDate: endDate
 	};
@@ -123,20 +115,24 @@ function reserveVehicle(vehicle) {
 	        const errorText = await response.text();
 	        throw new Error(errorText || 'Reservation failed');
 	    }
+		
+		if(response.status == 200) {
 
-	    const reservationResult = await response.json();
-	    // Store reservation details for payment page
-	    sessionStorage.setItem('currentReservation', JSON.stringify(reservationResult));
-	    // Redirect to payment page
-		alert("Reservation was successfull");
-		window.location.href = 'dashboard.html'
+		    const reservationResult = await response.json();
+		    sessionStorage.setItem('currentReservation', JSON.stringify(reservationResult));
+			alert("Reservation successfull! Payment is due on arrival date.");
+			window.location.href = 'dashboard.html'
+		}
+		
+		if(response.status == 401) {
+			const errorText = await response.text();
+			throw new Error(errorText)
+		}
+		
 		} catch (err) {
 	    console.error(err);
 	    alert('Error: ' + err.message);
 	}
-
-    // Redirect to the payment page
-    //window.location.href = 'Payment.html';
 }
 
 function showError(message) {

@@ -8,7 +8,10 @@ import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 
 import main.java.com.carrental.dao.VehicleDAO;
+import main.java.com.carrental.model.Rental;
 import main.java.com.carrental.model.Vehicle;
+import main.java.com.carrental.model.Vehicle.VehicleStatus;
+import main.java.com.carrental.service.RentalService;
 import main.java.com.carrental.service.VehicleService;
 import main.java.com.carrental.util.HTTPUtils;
 import main.java.com.carrental.util.JSONUtil;
@@ -55,7 +58,8 @@ public class ReservationHandler {
 	}
 	
 	public static class Reserve implements HttpHandler{
-
+		RentalService service = new RentalService();
+		VehicleDAO vecDAO = new VehicleDAO();
 		@Override
 		public void handle(HttpExchange exchange) throws IOException {
 			if (!"POST".equals(exchange.getRequestMethod())) {
@@ -63,6 +67,16 @@ public class ReservationHandler {
 	            return;
 	        }
 			
+			String body = JSONUtil.readBody(exchange);
+			Rental rental = service.getRentalFromJson(body);
+			boolean reserved = service.reserveVehicle(rental);
+			if(reserved) {
+				System.out.println("Reservation successful");
+				JSONUtil.sendResponse(exchange, HTTPUtils.SUCCESSFUL_RESPONSE, JSONUtil.jsonifyString("Vehicle has been reserved successfully"));
+			} else {
+				System.out.println("Could not insert rental");
+				JSONUtil.sendResponse(exchange, HTTPUtils.EXCEPTION_ERROR_RESPONSE, JSONUtil.jsonifyString("Vehicle reservation was unsuccessfull, please try again later"));
+			}
 		}
 		
 	}

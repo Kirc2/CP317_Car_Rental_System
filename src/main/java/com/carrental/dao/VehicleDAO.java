@@ -8,7 +8,7 @@ import java.util.List;
 import main.java.com.carrental.model.Vehicle;
 import main.java.com.carrental.model.Vehicle.VehicleStatus;
 import main.java.com.carrental.model.Vehicle.VehicleType;
-import main.java.com.carrental.util.VehicleUtil;
+import main.java.com.carrental.util.ModelUtil;
 
 /**
  * Get all Vehicle info from this class, this should be the only class that
@@ -71,7 +71,7 @@ public class VehicleDAO {
 			while (rs.next()) {
 				Vehicle vec = new Vehicle(rs.getString("id"), rs.getString("license_plate"), rs.getString("make"),
 						rs.getString("model"), rs.getInt("year"), rs.getDouble("daily_rate"),
-						VehicleUtil.getTypeFromString(rs.getString("vehicle_type")) // column name
+						ModelUtil.getTypeFromString(rs.getString("vehicle_type")) // column name
 				);
 				vehicles.add(vec);
 			}
@@ -80,6 +80,29 @@ public class VehicleDAO {
 			e.printStackTrace();
 		}
 		return vehicles;
+	}
+	
+	public Vehicle findVehicleFromRentalID(String rentalID) {
+		 String sql = "SELECT v.* FROM vehicles v INNER JOIN rentals r ON v.id = r.vehicle_id WHERE r.id = ?";
+		    ResultSet rs = MySQL.fetch(sql, rentalID);
+            Vehicle vehicle = new Vehicle();
+
+		    try {
+		        if (rs != null && rs.next()) {
+		            vehicle.setId(rs.getString("id"));
+		            vehicle.setLicensePlate(rs.getString("license_plate"));
+		            vehicle.setMake(rs.getString("make"));
+		            vehicle.setModel(rs.getString("model"));
+		            vehicle.setYear(rs.getInt("year"));
+		            vehicle.setDailyRate(rs.getDouble("daily_rate"));
+		            vehicle.setType(ModelUtil.getTypeFromString(rs.getString("vehicle_type")));
+		            vehicle.setStatus(ModelUtil.getVehicleStatusFromString(rs.getString("car_status")));
+		            
+		        }
+		    } catch (SQLException e) {
+		        e.printStackTrace();
+		    }
+		    return vehicle;
 	}
 
 	/**
@@ -101,7 +124,7 @@ public class VehicleDAO {
 				vehicle.setYear(set.getInt("year"));
 				vehicle.setDailyRate(set.getDouble("daily_rate"));
 				String type = set.getString("vehicle_type");
-				vehicle.setType(VehicleUtil.getTypeFromString(type));
+				vehicle.setType(ModelUtil.getTypeFromString(type));
 				vehicles.add(vehicle);
 			}
 		} catch (SQLException e) {
@@ -129,7 +152,7 @@ public class VehicleDAO {
 				vehicle.setYear(set.getInt("year"));
 				vehicle.setDailyRate(set.getDouble("daily_rate"));
 				String type = set.getString("vehicle_type");
-				vehicle.setType(VehicleUtil.getTypeFromString(type));
+				vehicle.setType(ModelUtil.getTypeFromString(type));
 				vehicles.add(vehicle);
 			}
 		} catch (SQLException e) {
@@ -189,12 +212,12 @@ public class VehicleDAO {
 
 				String typeStr = set.getString("vehicle_type");
 				if (typeStr != null) {
-					vehicle.setType(VehicleUtil.getTypeFromString(typeStr));
+					vehicle.setType(ModelUtil.getTypeFromString(typeStr));
 				}
 
 				String statusStr = set.getString("car_status");
 				if (statusStr != null) {
-					vehicle.setStatus(VehicleUtil.getStatusFromString(statusStr));
+					vehicle.setStatus(ModelUtil.getVehicleStatusFromString(statusStr));
 				}
 			} else {
 				System.out.println("No vehicle found with ID: " + ID);

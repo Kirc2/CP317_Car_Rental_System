@@ -7,10 +7,10 @@ import main.java.com.carrental.model.Customer;
 import main.java.com.carrental.model.Payment;
 import main.java.com.carrental.model.Rental;
 import main.java.com.carrental.model.Vehicle;
-import main.java.com.carrental.util.VehicleUtil;
+import main.java.com.carrental.util.ModelUtil;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
@@ -177,10 +177,10 @@ public class ModelTest {
 
         @Test
         void testGetTypeFromString_fixed() {
-            assertEquals(Vehicle.VehicleType.SEDAN, VehicleUtil.getTypeFromString("SEDAN"));
-            assertEquals(Vehicle.VehicleType.SUV, VehicleUtil.getTypeFromString("SUV"));
-            assertEquals(Vehicle.VehicleType.TRUCK, VehicleUtil.getTypeFromString("TRUCK"));
-            assertEquals(Vehicle.VehicleType.CAR, VehicleUtil.getTypeFromString("CAR"));
+            assertEquals(Vehicle.VehicleType.SEDAN, ModelUtil.getTypeFromString("SEDAN"));
+            assertEquals(Vehicle.VehicleType.SUV, ModelUtil.getTypeFromString("SUV"));
+            assertEquals(Vehicle.VehicleType.TRUCK, ModelUtil.getTypeFromString("TRUCK"));
+            assertEquals(Vehicle.VehicleType.CAR, ModelUtil.getTypeFromString("CAR"));
         }
         
     }
@@ -200,9 +200,9 @@ public class ModelTest {
             customer.setCustomerID("C001");
             Vehicle vehicle = new Vehicle();
             vehicle.setId("V001");
-            LocalDateTime pickup = LocalDateTime.of(2023, 6, 1, 10, 0);
-            LocalDateTime plannedReturn = LocalDateTime.of(2023, 6, 5, 10, 0);
-            LocalDateTime actualReturn = LocalDateTime.of(2023, 6, 5, 9, 30);
+            LocalDate pickup = LocalDate.of(2023, 6, 1);
+            LocalDate plannedReturn = LocalDate.of(2023, 6, 5);
+            LocalDate actualReturn = LocalDate.of(2023, 6, 5);
             double totalCost = 200.0;
             Rental.RentalStatus status = Rental.RentalStatus.ACTIVE;
             Payment payment = new Payment();

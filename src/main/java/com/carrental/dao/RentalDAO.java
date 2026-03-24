@@ -4,8 +4,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import main.java.com.carrental.model.Rental;
+import main.java.com.carrental.model.Rental.RentalStatus;
+import main.java.com.carrental.util.ModelUtil;
 
 /**
  * Get all Rental info from this class, this
@@ -19,8 +21,8 @@ public class RentalDAO {
 	 * @return true if successful, false if error occured
 	 */
 	public boolean cancelRental(String rentalId) {
-	    String sqlUpdateRental = "UPDATE rentals SET status = 'CANCELLED' WHERE rental_id = ? AND status != 'CANCELLED'";
-	    String sqlUpdateVehicle = "UPDATE vehicles SET status = 'AVAILABLE' WHERE vehicle_id = (SELECT vehicle_id FROM rentals WHERE rental_id = ?)";
+		String sqlUpdateRental = "UPDATE rentals SET rental_status = 'CANCELLED' WHERE id = ? AND rental_status != 'CANCELLED'";
+		String sqlUpdateVehicle = "UPDATE vehicles SET car_status = 'AVAILABLE' WHERE id = (SELECT vehicle_id FROM rentals WHERE id = ?)";
 
 	    try {
 	        // Use transaction if possible (assuming MySQL.update supports it)
@@ -43,9 +45,10 @@ public class RentalDAO {
 				String id = result.getString("id");
 			    String vec_id = result.getString("vehicle_id");
 			    String customer_id = result.getString("customer_id");
-			    LocalDateTime start_date = result.getTimestamp("start_date").toLocalDateTime();
-			    LocalDateTime end_date = result.getTimestamp("end_date").toLocalDateTime();
+			    LocalDate start_date = result.getTimestamp("start_date").toLocalDateTime().toLocalDate();
+			    LocalDate end_date = result.getTimestamp("end_date").toLocalDateTime().toLocalDate();
 			    double total_cost = result.getDouble("total_cost");
+			    RentalStatus status = ModelUtil.getRentalStatusFromString(result.getString("rental_status"));
 			    
 			    Rental rental = new Rental();
 			    rental.setRentalID(id);
@@ -54,6 +57,7 @@ public class RentalDAO {
 			    rental.setPickupDate(start_date);
 			    rental.setPlannedReturnDate(end_date);
 			    rental.setTotalCost(total_cost);
+			    rental.setStatus(status);
 			    return rental;
 			}
 		} catch(Exception e) {
@@ -78,8 +82,8 @@ public class RentalDAO {
 				String id = result.getString("id");
 			    String vec_id = vehicleID;
 			    String customer_id = result.getString("customer_id");
-			    LocalDateTime start_date = result.getTimestamp("start_date").toLocalDateTime();
-			    LocalDateTime end_date = result.getTimestamp("end_date").toLocalDateTime();
+			    LocalDate start_date = result.getTimestamp("start_date").toLocalDateTime().toLocalDate();
+			    LocalDate end_date = result.getTimestamp("end_date").toLocalDateTime().toLocalDate();
 			    double total_cost = result.getDouble("total_cost");
 			    
 			    Rental rental = new Rental();
@@ -130,8 +134,8 @@ public class RentalDAO {
         rental.setRentalID(rs.getString("id"));
         rental.setVehicle(VehicleDAO.findByID(rs.getString("vehicle_id")));
         rental.setCustomer(CustomerDAO.findByID(rs.getString("customer_id")));
-        rental.setPickupDate(rs.getObject("start_date", LocalDateTime.class));
-        rental.setPlannedReturnDate(rs.getObject("end_date", LocalDateTime.class));
+        rental.setPickupDate(rs.getObject("start_date", LocalDate.class));
+        rental.setPlannedReturnDate(rs.getObject("end_date", LocalDate.class));
         rental.setTotalCost(rs.getDouble("total_cost"));
         return rental;
     }
@@ -139,11 +143,11 @@ public class RentalDAO {
 	/**
 	 * Finds overlapping rentals using the vehicle identification, start and end date of the rental
 	 * @param String vehicle id
-	 * @param LocalDateTime start date
-	 * @param LocalDateTime end date
+	 * @param LocalDate start date
+	 * @param LocalDate end date
 	 * @return A list of overlapping rentals
 	 */
-	public List<Rental> findOverlappingRentals(String vehicleIdStr, LocalDateTime proposedStart, LocalDateTime proposedEnd) {
+	public List<Rental> findOverlappingRentals(String vehicleIdStr, LocalDate proposedStart, LocalDate proposedEnd) {
 	    List<Rental> overlapping = new ArrayList<>();
 	    try {
 	        int vehicleId = Integer.parseInt(vehicleIdStr);
@@ -166,14 +170,17 @@ public class RentalDAO {
 	 * insert a record of a rental into the MySQL database
 	 * @param rental to insert into the database
 	 */
-	public static void insertRecord(Rental rental) {
-		String query = "INSERT INTO rentals(vehicle_id,customer_id,start_date, end_date, total_cost) "
-					 + "VALUES(?,?,?,?,?);";
-		MySQL.insert(query,rental.getVehicle().getId(), 
+	public static boolean insertRecord(Rental rental) {
+		String query = "INSERT INTO rentals(vehicle_id,customer_id,start_date, end_date, total_cost, rental_status) "
+					 + "VALUES(?,?,?,?,?,?);";
+		boolean inserted = MySQL.insert(query,rental.getVehicle().getId(), 
 							rental.getCustomer().getCustomerID(),
 							rental.getPickupDate(),
 							rental.getPlannedReturnDate(),
-							rental.getTotalCost());
+							rental.getTotalCost(),
+							ModelUtil.RentalStatusToString(rental.getStatus()));
+		
+		return inserted;
 	}
 
 }
