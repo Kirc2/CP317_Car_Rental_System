@@ -5,9 +5,6 @@ import java.net.InetSocketAddress;
 import com.sun.net.httpserver.HttpServer;
 import main.java.com.carrental.gui.Login_RegisterEndpoints.LoginHandler;
 import main.java.com.carrental.gui.Login_RegisterEndpoints.RegisterHandler;
-import main.java.com.carrental.gui.RentalHistoryEndpoints.CancelReservation;
-import main.java.com.carrental.gui.RentalHistoryEndpoints.ListAllVehicles;
-import main.java.com.carrental.gui.RentalHistoryEndpoints.VehicleInfo;
 import main.java.com.carrental.gui.ReservationHandler.GETSVehicleInfo;
 import main.java.com.carrental.gui.ReservationHandler.Reserve;
 
@@ -34,19 +31,17 @@ public class CarRentalServer {
 			// ENDPOINT AT Editprofile.html
 			server.createContext("/edit_profile", new ProfileEndpoints());
 			// ENDPOINT AT History.html
-			server.createContext("/history", new ListAllVehicles());
-			// ENPOINT AT Rental_Details.html
-			server.createContext("/rentalhistory", new VehicleInfo());
+			server.createContext("/history", new RentalHistoryEndpoints());
 			// ENDPOINT AT Payment.html
 			server.createContext("/payment", new PaymentEndpoints());
 			// ENDPOINT AT Rentals.html
 			server.createContext("/rentals", new VehicleSearchEndpoints());
 			// ENDPOINT AT Reservation.html
 			server.createContext("/getvehicleinfo", new GETSVehicleInfo());
-			// ENDPOINT AT Reservations.html
+			
 			server.createContext("/reserve", new Reserve());
-			// ENDPOINT AT Rental_Details.html
-			server.createContext("/cancel", new CancelReservation());
+
+			server.createContext("/rentalhistory", new RentalHistory)
 
 			server.setExecutor(null);
 			server.start();
