@@ -1,7 +1,6 @@
 package main.java.com.carrental.model;
 
 import java.time.LocalDate;
-import java.time.LocalDate;
 
 /**
  * Rental class model, mostly used to store information for use in another function

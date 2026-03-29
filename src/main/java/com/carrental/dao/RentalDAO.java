@@ -137,6 +137,7 @@ public class RentalDAO {
         rental.setPickupDate(rs.getObject("start_date", LocalDate.class));
         rental.setPlannedReturnDate(rs.getObject("end_date", LocalDate.class));
         rental.setTotalCost(rs.getDouble("total_cost"));
+        rental.setStatus(ModelUtil.getRentalStatusFromString(rs.getString("rental_status")));
         return rental;
     }
 
@@ -181,6 +182,25 @@ public class RentalDAO {
 							ModelUtil.RentalStatusToString(rental.getStatus()));
 		
 		return inserted;
+	}
+
+	/**
+	 * Retrieves all rentals from the database.
+	 * @return list of all rentals
+	 */
+	public List<Rental> findAllRentals() {
+	    List<Rental> rentals = new ArrayList<>();
+	    String query = "SELECT * FROM rentals;";
+	    ResultSet rs = MySQL.fetch(query);
+	    try {
+	        while (rs != null && rs.next()) {
+	            Rental rental = mapRowToRental(rs);
+	            rentals.add(rental);
+	        }
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+	    return rentals;
 	}
 
 }

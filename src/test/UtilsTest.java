@@ -5,6 +5,8 @@ import com.sun.net.httpserver.HttpPrincipal;
 import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpContext;
 import main.java.com.carrental.model.Customer;
+import main.java.com.carrental.model.Rental;
+import main.java.com.carrental.model.Vehicle;
 import main.java.com.carrental.util.JSONUtil;
 import main.java.com.carrental.util.SecurePasswordHasher;
 import org.junit.jupiter.api.Nested;
@@ -14,6 +16,12 @@ import java.net.InetSocketAddress;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
@@ -248,6 +256,94 @@ public class UtilsTest {
             String input = "\\ and \"quoted\"";
             String expected = "\\\\ and \\\"quoted\\\"";
             assertEquals(expected, JSONUtil.escapeJson(input));
+        }
+        @Test
+        void testRentalsToJson() {
+            List<Rental> rentals = new ArrayList<>();
+            Rental r1 = new Rental();
+            r1.setRentalID("1");
+            Vehicle v1 = new Vehicle();
+            v1.setMake("Toyota");
+            v1.setModel("Camry");
+            v1.setYear(2022);
+            r1.setVehicle(v1);
+            r1.setPickupDate(LocalDate.of(2026,1,10));
+            r1.setPlannedReturnDate(LocalDate.of(2026,1,15));
+            r1.setTotalCost(225.0);
+            rentals.add(r1);
+            String json = JSONUtil.RentalsToJson(rentals);
+            assertTrue(json.contains("\"id\":\"1\""));
+            assertTrue(json.contains("\"carName\":\"Toyota Camry (2022)\""));
+            assertTrue(json.contains("\"start\":\"2026-01-10\""));
+            assertTrue(json.contains("\"end\":\"2026-01-15\""));
+            assertTrue(json.contains("\"total\":\"225.0\""));
+        }
+
+        @Test
+        void testVehiclesToJson() {
+            List<Vehicle> vehicles = new ArrayList<>();
+            Vehicle v = new Vehicle();
+            v.setId("10");
+            v.setMake("Honda");
+            v.setModel("Civic");
+            v.setYear(2023);
+            v.setDailyRate(50.0);
+            v.setType(Vehicle.VehicleType.SEDAN);
+            v.setStatus(Vehicle.VehicleStatus.AVAILABLE);
+            vehicles.add(v);
+            String json = JSONUtil.VehiclesToJson(vehicles);
+            assertTrue(json.contains("\"id\":\"10\""));
+            assertTrue(json.contains("\"make\":\"Honda\""));
+            assertTrue(json.contains("\"model\":\"Civic\""));
+            assertTrue(json.contains("\"year\":2023"));
+            assertTrue(json.contains("\"dailyrate\":50.0"));
+            assertTrue(json.contains("\"type\":\"SEDAN\""));
+            assertTrue(json.contains("\"status\":\"AVAILABLE\""));
+        }
+
+        @Test
+        void testVehicleToJson() {
+            Vehicle v = new Vehicle();
+            v.setId("5");
+            v.setMake("Ford");
+            v.setModel("F-150");
+            v.setYear(2021);
+            v.setDailyRate(95.0);
+            v.setType(Vehicle.VehicleType.TRUCK);
+            v.setStatus(Vehicle.VehicleStatus.RENTED);
+            String json = JSONUtil.VehicleToJson(v);
+            assertTrue(json.contains("\"id\":\"5\""));
+            assertTrue(json.contains("\"make\":\"Ford\""));
+            assertTrue(json.contains("\"model\":\"F-150\""));
+            assertTrue(json.contains("\"year\":2021"));
+            assertTrue(json.contains("\"dailyrate\":95.0"));
+            assertTrue(json.contains("\"type\":\"TRUCK\""));
+            assertTrue(json.contains("\"status\":\"RENTED\""));
+        }
+
+        @Test
+        void testMapToJson() {
+            Map<String, Object> map = new HashMap<>();
+            map.put("name", "Alice");
+            map.put("age", 30);
+            map.put("active", true);
+            String json = JSONUtil.mapToJson(map);
+            assertTrue(json.contains("\"name\":\"Alice\""));
+            assertTrue(json.contains("\"age\":30"));
+            assertTrue(json.contains("\"active\":true"));
+        }
+
+        @Test
+        void testListMapToJson() {
+            List<Map<String, Object>> list = new ArrayList<>();
+            Map<String, Object> m1 = new HashMap<>();
+            m1.put("id", 1);
+            Map<String, Object> m2 = new HashMap<>();
+            m2.put("id", 2);
+            list.add(m1);
+            list.add(m2);
+            String json = JSONUtil.listMapToJson(list);
+            assertEquals("[{\"id\":1},{\"id\":2}]", json);
         }
     }
 

@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Staff Dashboard - Car Rental</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            background-color: #FFA500;
+            font-family: Arial, sans-serif;
+            padding: 30px 20px;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        h1 {
+            color: white;
+            text-align: center;
+            margin-bottom: 30px;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.2);
+        }
+        .card {
+            background-color: #B35A00;
+            border-radius: 20px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+        .card h2 {
+            color: white;
+            margin-bottom: 15px;
+            font-size: 20px;
+            border-bottom: 2px solid rgba(255,255,255,0.3);
+            padding-bottom: 8px;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            color: white;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        input, select, button {
+            width: 100%;
+            padding: 10px;
+            border-radius: 8px;
+            border: none;
+            font-size: 14px;
+        }
+        input, select {
+            background-color: #f9f9f7;
+        }
+        button {
+            background-color: #333;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        button:hover {
+            background-color: #555;
+        }
+        .row {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        .col {
+            flex: 1;
+            min-width: 250px;
+        }
+        .result-area {
+            background-color: white;
+            border-radius: 12px;
+            padding: 15px;
+            margin-top: 20px;
+            font-family: monospace;
+            white-space: pre-wrap;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        .message {
+            margin-top: 10px;
+            padding: 8px;
+            border-radius: 6px;
+            text-align: center;
+            font-weight: bold;
+        }
+        .success {
+            background-color: #d4edda;
+            color: #155724;
+        }
+        .error {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        .back-btn {
+            background-color: transparent;
+            border: 1px solid white;
+            color: white;
+            margin-top: 20px;
+        }
+        .back-btn:hover {
+            background-color: rgba(255,255,255,0.2);
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Staff Dashboard</h1>
+
+    <div class="card">
+        <h2>Add New Vehicle</h2>
+        <div class="row">
+            <div class="col">
+                <div class="form-group">
+                    <label>License Plate</label>
+                    <input type="text" id="licensePlate" placeholder="e.g., ABC123">
+                </div>
+                <div class="form-group">
+                    <label>Make</label>
+                    <input type="text" id="make" placeholder="Toyota">
+                </div>
+                <div class="form-group">
+                    <label>Model</label>
+                    <input type="text" id="model" placeholder="Camry">
+                </div>
+                <div class="form-group">
+                    <label>Year</label>
+                    <input type="number" id="year" placeholder="2020">
+                </div>
+                <div class="form-group">
+                    <label>Daily Rate ($)</label>
+                    <input type="number" id="dailyRate" step="0.01" placeholder="49.99">
+                </div>
+                <div class="form-group">
+                    <label>Vehicle Type</label>
+                    <select id="type">
+                        <option value="SEDAN">SEDAN</option>
+                        <option value="SUV">SUV</option>
+                        <option value="TRUCK">TRUCK</option>
+                        <option value="CAR">CAR</option>
+                    </select>
+                </div>
+                <button onclick="addVehicle()">Add Vehicle</button>
+                <div id="addMessage" class="message"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <h2>Update Vehicle Status</h2>
+        <div class="row">
+            <div class="col">
+                <div class="form-group">
+                    <label>Vehicle ID</label>
+                    <input type="text" id="vehicleId" placeholder="Vehicle ID">
+                </div>
+                <div class="form-group">
+                    <label>New Status</label>
+                    <select id="newStatus">
+                        <option value="AVAILABLE">AVAILABLE</option>
+                        <option value="RENTED">RENTED</option>
+                        <option value="MAINTENANCE">MAINTENANCE</option>
+                    </select>
+                </div>
+                <button onclick="updateVehicleStatus()">Update Status</button>
+                <div id="statusMessage" class="message"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <h2>Search Vehicles</h2>
+        <div class="row">
+            <div class="col">
+                <div class="form-group">
+                    <label>Vehicle ID (optional)</label>
+                    <input type="text" id="searchId" placeholder="Enter ID">
+                </div>
+                <div class="form-group">
+                    <label>Type (optional)</label>
+                    <select id="searchType">
+                        <option value="">Any</option>
+                        <option value="SEDAN">SEDAN</option>
+                        <option value="SUV">SUV</option>
+                        <option value="TRUCK">TRUCK</option>
+                        <option value="CAR">CAR</option>
+                    </select>
+                </div>
+                <button onclick="searchVehicles()">Search</button>
+                <div id="searchResults" class="result-area"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <h2>All Rentals</h2>
+        <button onclick="listAllRentals()">Refresh Rentals</button>
+        <div id="rentalsList" class="result-area"></div>
+    </div>
+
+    <div class="card">
+        <h2>Cancel Rental</h2>
+        <div class="row">
+            <div class="col">
+                <div class="form-group">
+                    <label>Rental ID</label>
+                    <input type="text" id="cancelRentalId" placeholder="Rental ID">
+                </div>
+                <button onclick="cancelRental()">Cancel Rental</button>
+                <div id="cancelMessage" class="message"></div>
+            </div>
+        </div>
+    </div>
+
+    <button class="back-btn" onclick="window.location.href='dashboard.html'">Back to Customer Dashboard</button>
+</div>
+
+<script>
+    const API_BASE = 'http://localhost:8080';
+
+    async function addVehicle() {
+        const vehicle = {
+            licensePlate: document.getElementById('licensePlate').value,
+            make: document.getElementById('make').value,
+            model: document.getElementById('model').value,
+            year: parseInt(document.getElementById('year').value),
+            dailyRate: parseFloat(document.getElementById('dailyRate').value),
+            type: document.getElementById('type').value
+        };
+
+        const msgDiv = document.getElementById('addMessage');
+        msgDiv.className = 'message';
+
+        if (!vehicle.licensePlate || !vehicle.make || !vehicle.model || isNaN(vehicle.year) || isNaN(vehicle.dailyRate)) {
+            msgDiv.textContent = 'Please fill all fields correctly.';
+            msgDiv.classList.add('error');
+            return;
+        }
+
+        try {
+            const response = await fetch(`${API_BASE}/staff/addVehicle`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(vehicle)
+            });
+            const data = await response.json();
+            if (response.ok) {
+                msgDiv.textContent = data.message || 'Vehicle added successfully!';
+                msgDiv.classList.add('success');
+                // Clear form
+                document.getElementById('licensePlate').value = '';
+                document.getElementById('make').value = '';
+                document.getElementById('model').value = '';
+                document.getElementById('year').value = '';
+                document.getElementById('dailyRate').value = '';
+            } else {
+                msgDiv.textContent = data.error || 'Failed to add vehicle.';
+                msgDiv.classList.add('error');
+            }
+        } catch (err) {
+            msgDiv.textContent = 'Network error.';
+            msgDiv.classList.add('error');
+        }
+    }
+
+    async function updateVehicleStatus() {
+        const vehicleId = document.getElementById('vehicleId').value;
+        const newStatus = document.getElementById('newStatus').value;
+        const msgDiv = document.getElementById('statusMessage');
+        msgDiv.className = 'message';
+
+        if (!vehicleId) {
+            msgDiv.textContent = 'Please enter a vehicle ID.';
+            msgDiv.classList.add('error');
+            return;
+        }
+
+        try {
+            const response = await fetch(`${API_BASE}/staff/updateVehicleStatus`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ id: vehicleId, status: newStatus })
+            });
+            const data = await response.json();
+            if (response.ok) {
+                msgDiv.textContent = data.message || 'Status updated successfully!';
+                msgDiv.classList.add('success');
+            } else {
+                msgDiv.textContent = data.error || 'Update failed.';
+                msgDiv.classList.add('error');
+            }
+        } catch (err) {
+            msgDiv.textContent = 'Network error.';
+            msgDiv.classList.add('error');
+        }
+    }
+
+    async function searchVehicles() {
+        const id = document.getElementById('searchId').value;
+        const type = document.getElementById('searchType').value;
+
+        let url = `${API_BASE}/staff/searchVehicles?`;
+        if (id) url += `id=${encodeURIComponent(id)}&`;
+        if (type) url += `type=${encodeURIComponent(type)}&`;
+
+        const resultsDiv = document.getElementById('searchResults');
+        resultsDiv.innerHTML = 'Loading...';
+
+        try {
+            const response = await fetch(url);
+            const data = await response.json();
+            if (response.ok) {
+                if (data.length === 0) {
+                    resultsDiv.innerHTML = 'No vehicles found.';
+                    return;
+                }
+                let html = '<table><tr><th>ID</th><th>License</th><th>Make</th><th>Model</th><th>Year</th><th>Daily Rate</th><th>Type</th><th>Status</th></tr>';
+                data.forEach(v => {
+                    html += `<tr>
+                        <td>${v.id}</td>
+                        <td>${v.licensePlate}</td>
+                        <td>${v.make}</td>
+                        <td>${v.model}</td>
+                        <td>${v.year}</td>
+                        <td>${v.dailyrate}</td>
+                        <td>${v.type}</td>
+                        <td>${v.status}</td>
+                    </tr>`;
+                });
+                html += '</table>';
+                resultsDiv.innerHTML = html;
+            } else {
+                resultsDiv.innerHTML = `<div class="error">Error: ${data.error || 'Failed to fetch'}</div>`;
+            }
+        } catch (err) {
+            resultsDiv.innerHTML = '<div class="error">Network error.</div>';
+        }
+    }
+
+    async function listAllRentals() {
+        const rentalsDiv = document.getElementById('rentalsList');
+        rentalsDiv.innerHTML = 'Loading...';
+
+        try {
+            const response = await fetch(`${API_BASE}/staff/listRentals`);
+            const data = await response.json();
+            if (response.ok) {
+                if (data.length === 0) {
+                    rentalsDiv.innerHTML = 'No rentals found.';
+                    return;
+                }
+                let html = '<table><tr><th>ID</th><th>Customer</th><th>Vehicle</th><th>Start Date</th><th>End Date</th><th>Total Cost</th><th>Status</th></tr>';
+                data.forEach(r => {
+                    html += `<tr>
+                        <td>${r.id}</td>
+                        <td>${r.customerName}</td>
+                        <td>${r.vehicleInfo}</td>
+                        <td>${r.startDate}</td>
+                        <td>${r.endDate}</td>
+                        <td>${r.totalCost}</td>
+                        <td>${r.status}</td>
+                    </tr>`;
+                });
+                html += '</table>';
+                rentalsDiv.innerHTML = html;
+            } else {
+                rentalsDiv.innerHTML = `<div class="error">Error: ${data.error || 'Failed to fetch'}</div>`;
+            }
+        } catch (err) {
+            rentalsDiv.innerHTML = '<div class="error">Network error.</div>';
+        }
+    }
+
+    async function cancelRental() {
+        const rentalId = document.getElementById('cancelRentalId').value;
+        const msgDiv = document.getElementById('cancelMessage');
+        msgDiv.className = 'message';
+
+        if (!rentalId) {
+            msgDiv.textContent = 'Please enter a rental ID.';
+            msgDiv.classList.add('error');
+            return;
+        }
+
+        try {
+            const response = await fetch(`${API_BASE}/staff/cancelRental`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ id: rentalId })
+            });
+            const data = await response.json();
+            if (response.ok) {
+                msgDiv.textContent = data.message || 'Rental cancelled successfully!';
+                msgDiv.classList.add('success');
+                document.getElementById('cancelRentalId').value = '';
+                listAllRentals(); // refresh list
+            } else {
+                msgDiv.textContent = data.error || 'Cancellation failed.';
+                msgDiv.classList.add('error');
+            }
+        } catch (err) {
+            msgDiv.textContent = 'Network error.';
+            msgDiv.classList.add('error');
+        }
+    }
+
+    listAllRentals();
+</script>
+</body>
+</html>

@@ -98,4 +98,15 @@ public class CustomerDAO {
 		MySQL.insert(query,username,email,password);
 		
 	}
+	
+	/**
+	 * Updates the email address of a customer.
+	 * @param customerId the ID of the customer
+	 * @param newEmail the new email address
+	 * @return true if the update succeeded, false otherwise
+	 */
+	public static boolean updateEmail(String customerId, String newEmail) {
+	    String sql = "UPDATE customers SET email = ? WHERE id = ?";
+	    return MySQL.update(sql, newEmail, customerId);
+	}
 }
