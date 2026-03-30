@@ -10,7 +10,6 @@ import com.sun.net.httpserver.HttpHandler;
 import main.java.com.carrental.dao.VehicleDAO;
 import main.java.com.carrental.model.Rental;
 import main.java.com.carrental.model.Vehicle;
-import main.java.com.carrental.model.Vehicle.VehicleStatus;
 import main.java.com.carrental.service.RentalService;
 import main.java.com.carrental.service.VehicleService;
 import main.java.com.carrental.util.HTTPUtils;

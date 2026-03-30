@@ -1,9 +1,6 @@
 package main.java.com.carrental.service;
 
 import java.time.LocalDate;
-import java.time.LocalDate;
-
-import main.java.com.carrental.dao.CustomerDAO;
 import main.java.com.carrental.dao.RentalDAO;
 import main.java.com.carrental.dao.VehicleDAO;
 import main.java.com.carrental.model.Customer;

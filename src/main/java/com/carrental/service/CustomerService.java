@@ -59,4 +59,37 @@ public class CustomerService {
 		CustomerDAO.insertRecord(customer.getCustomerName(), customer.getEmail(), customer.getPassword());
 	}
 	
+	/**
+	 * Updates the email of the currently logged‑in customer.
+	 * @param oldEmail the old email (provided by the user)
+	 * @param newEmail the new email
+	 * @return true if the update succeeded, false otherwise
+	 */
+	public boolean updateEmail(String oldEmail, String newEmail) {
+	    Customer current = PersistentData.Persistentcustomer;
+	    if (current == null) {
+	        System.err.println("No user logged in");
+	        return false;
+	    }
+	    if (!current.getEmail().equals(oldEmail)) {
+	        System.err.println("Old email does not match current email");
+	        return false;
+	    }
+	    if (newEmail.equals(oldEmail)) {
+	        return true;
+	    }
+	    Customer existing = CustomerDAO.findByEmail(newEmail);
+	    if (existing != null && !existing.getCustomerID().equals(current.getCustomerID())) {
+	        System.err.println("New email already in use by another account");
+	        return false;
+	    }
+
+	    boolean updated = CustomerDAO.updateEmail(current.getCustomerID(), newEmail);
+	    if (updated) {
+	        current.setEmail(newEmail);
+	        PersistentData.setCustomer(current);
+	    }
+	    return updated;
+	}
+	
 }

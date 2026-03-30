@@ -1,4 +1,59 @@
 
+// testing-------------------------------------------------
+const container = document.getElementById("filtered-list");
+
+
+/*put for loop into it's own function to reuse in testing*/
+function rentalsToHtml(rentals) { 
+	let i = 0
+	let row = document.createElement('tr');
+	row.className = 'rentalsRow';
+	rentals.forEach(rental => {
+		const item = document.createElement('td');
+		
+		item.innerHTML = `
+			<a href="Reservations.html?id=${rental.id}" class="rental-card">
+			<img class="image" src="js/car_image_3.jpg" alt="no image"/>
+			<div class="name">${rental.make}  ${rental.model}  ${rental.year}</div>
+			<div class="type">${rental.type}</div>
+			<div class="price">Daily Rate : $${rental.dailyrate}</div>
+			<div class="status">Current Status : ${rental.status}</div>
+			</a>
+		`;
+		row.appendChild(item)
+		i = i+1;
+		if (i >= 3) {
+			container.appendChild(row);
+			row = document.createElement('tr');
+			row.className = 'rentalsRow';
+			i=0;
+		}
+	});
+
+	if (i > 0) {
+		container.appendChild(row);
+	}
+}
+async function testFilters() {
+	let testingData = [{id: 1, type: "sedan", make: "toyota", model: "y", year: 2015, dailyrate: 150, status: "available"},
+		{id: 1, type: "sedan", make: "toyota", model: "y", year: 2015, dailyrate: 150, status: "available"},
+		{id: 1, type: "sedan", make: "toyota", model: "y", year: 2015, dailyrate: 150, status: "available"},
+		{id: 1, type: "sedan", make: "toyota", model: "y", year: 2015, dailyrate: 150, status: "available"},
+		{id: 1, type: "sedan", make: "toyota", model: "y", year: 2015, dailyrate: 150, status: "available"},
+		{id: 1, type: "sedan", make: "toyota", model: "y", year: 2015, dailyrate: 150, status: "available"},
+		{id: 1, type: "sedan", make: "toyota", model: "y", year: 2015, dailyrate: 150, status: "available"},
+		{id: 1, type: "sedan", make: "toyota", model: "y", year: 2015, dailyrate: 150, status: "available"},
+		{id: 1, type: "sedan", make: "toyota", model: "y", year: 2015, dailyrate: 150, status: "available"},
+		{id: 1, type: "sedan", make: "toyota", model: "y", year: 2015, dailyrate: 150, status: "available"},
+		{id: 1, type: "sedan", make: "toyota", model: "y", year: 2015, dailyrate: 150, status: "available"},
+		{id: 1, type: "sedan", make: "toyota", model: "y", year: 2015, dailyrate: 150, status: "available"},
+		{id: 1, type: "sedan", make: "toyota", model: "y", year: 2015, dailyrate: 150, status: "available"}
+	]
+	console.log("testing")
+	rentalsToHtml(testingData)
+} // in place of applyFilters                                                  
+// ---------------------------------------------------------
+
 // Wait for the DOM to be fully loaded before running initialisation code.
 document.addEventListener('DOMContentLoaded', function() {
     const username = sessionStorage.getItem('username') || 'Guest';
@@ -50,21 +105,7 @@ async function applyFilters() {
 	        return;
 	    }
 
-	    // Loop through each rental and create a card
-		rentals.forEach(rental => {
-		    const link = document.createElement('a');
-		    link.href = `/Reservations.html?id=${rental.id}`;
-		    link.className = 'rental-card';
-
-		    link.innerHTML = `
-		        <div class="ID">Vehicle ID: ${rental.id}</div>
-		        <div class="type">Type : ${rental.type}</div>
-		        <div class="name">Name : ${rental.make}  ${rental.model}  ${rental.year}</div>
-		        <div class="price">Daily Rate : ${rental.dailyrate}</div>
-		        <div class="status">Current Status : ${rental.status}</div>
-		    `;
-		    container.appendChild(link);
-		});
+	    rentalsToHtml(rentals);
 	})
 	.catch(error => {
 	    console.error('Error:', error);

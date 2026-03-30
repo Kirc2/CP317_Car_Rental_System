@@ -1,0 +1,116 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+body {
+    background-color: #FFA500;
+    font-family: Arial, sans-serif;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 40px 20px;
+}
+.container {
+    max-width: 600px;
+    width: 100%;
+    background-color: #B35A00;
+    border-radius: 20px;
+    padding: 30px 40px;
+    color: white;
+}
+h1 {
+    text-align: center;
+    margin-bottom: 24px;
+    font-size: 28px;
+}
+.detail-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 12px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.3);
+    font-size: 16px;
+}
+.detail-label {
+    font-weight: bold;
+}
+.status {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 20px;
+    background-color: #4caf50;
+    color: white;
+    font-size: 14px;
+    font-weight: bold;
+}
+.button-group {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    margin-top: 30px;
+}
+button, .back-btn {
+    padding: 12px 24px;
+    font-size: 16px;
+    font-weight: bold;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.2s;
+    text-decoration: none;
+    display: inline-block;
+    text-align: center;
+}
+.reserve-btn {
+    background-color: #f0f0ee;
+    color: #333;
+    border: 1.5px solid #333;
+}
+.reserve-btn:hover {
+    background-color: #ddd;
+}
+.back-btn {
+    background-color: transparent;
+    color: white;
+    border: 1.5px solid white;
+}
+.back-btn:hover {
+    background-color: rgba(255,255,255,0.15);
+}
+.loading, .error {
+    text-align: center;
+    font-size: 18px;
+    margin-top: 40px;
+}
+.filter-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-bottom: 16px;
+}
+
+.filter-group label {
+    color: white;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.filter-group input,
+.filter-group select {
+    width: 100%;
+    padding: 14px 16px;
+    border-radius: 8px;
+    border: none;
+    background-color: #f9f9f7;
+    font-size: 15px;
+    color: #333;
+    outline: none;
+    box-sizing: border-box;
+}
+.dates-section h3 {
+    color: white;
+    font-size: 18px;
+    margin-bottom: 16px;
+    text-align: center;
+}		

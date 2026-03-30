@@ -3,109 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Car Rental - Edit Profile</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            background-color: #FFA500;
-            font-family: Arial, sans-serif;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding: 50px 20px;
-        }
-
-        .welcome {
-            text-align: center;
-            margin-bottom: 30px;
-            font-size: 28px;
-            font-weight: bold;
-            color: white;
-            text-shadow: 1px 1px 3px rgba(0,0,0,0.2);
-        }
-
-        .edit-box {
-            background-color: #B35A00;
-            border-radius: 20px;
-            padding: 30px 40px;
-            width: 100%;
-            max-width: 480px;
-            display: flex;
-            flex-direction: column;
-            gap: 16px;
-        }
-
-        .edit-box h2 {
-            color: white;
-            font-size: 20px;
-            font-weight: bold;
-            text-align: center;
-            margin-bottom: 6px;
-        }
-
-        input {
-            width: 100%;
-            padding: 14px 16px;
-            border-radius: 8px;
-            border: none;
-            background-color: #f9f9f7;
-            font-size: 15px;
-            color: #333;
-            outline: none;
-        }
-
-        input:focus {
-            box-shadow: 0 0 0 2px rgba(255,255,255,0.4);
-        }
-
-        .update-btn {
-            width: 100%;
-            padding: 14px;
-            border-radius: 8px;
-            border: 1.5px solid #333;
-            background-color: #f0f0ee;
-            font-size: 15px;
-            font-weight: bold;
-            cursor: pointer;
-            margin-top: 6px;
-            transition: background-color 0.2s;
-        }
-
-        .update-btn:hover {
-            background-color: #ddd;
-        }
-
-        .back-btn {
-            margin-top: 6px;
-            background-color: transparent;
-            border: 1.5px solid white;
-            color: white;
-            width: 100%;
-            padding: 14px;
-            border-radius: 8px;
-            font-size: 15px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: background-color 0.2s;
-        }
-
-        .back-btn:hover {
-            background-color: rgba(255,255,255,0.15);
-        }
-
-        .message {
-            text-align: center;
-            font-weight: bold;
-            font-size: 14px;
-            color: white;
-            display: none;
-        }
-    </style>
+    <link rel="stylesheet" href="css/editProfile.css">
 </head>
 <body>
 
@@ -123,43 +21,7 @@
         <button class="back-btn" onclick="window.location.href='dashboard.html'">Back to Dashboard</button>
     </div>
 
-    <script>
-        async function updateEmail() {
-            const oldEmail = document.getElementById('oldEmail').value;
-            const newEmail = document.getElementById('newEmail').value;
-            const msg = document.getElementById('message');
-
-            if (!oldEmail || !newEmail) {
-                msg.style.display = 'block';
-                msg.style.color = 'white';
-                msg.textContent = 'Please fill in both fields.';
-                return;
-            }
-
-            try {
-                const response = await fetch('http://localhost:8080/updateEmail', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ oldEmail: oldEmail, newEmail: newEmail })
-                });
-
-                if (response.ok) {
-                    msg.style.display = 'block';
-                    msg.style.color = '#90EE90';
-                    msg.textContent = 'Update Completed';
-                } else {
-                    const data = await response.json();
-                    msg.style.display = 'block';
-                    msg.style.color = 'white';
-                    msg.textContent = data.error || 'Old email not found.';
-                }
-            } catch (err) {
-                msg.style.display = 'block';
-                msg.style.color = 'white';
-                msg.textContent = 'Something is wrong. Try again.';
-            }
-        }
-    </script>
+    <script src="js/rental_details.js"> </script>
 
 </body>
 </html>

@@ -1,0 +1,146 @@
+:root {
+    --overlayColour: #ff810b;
+    --loginColour: hsl(28, 100%, 41%);
+    --bannerColour: rgb(255, 166, 0);
+    --wordColour: rgb(255,255,255);
+    --colour1: #ffffff;
+}
+
+body {
+    margin: 0;
+    font-family: Arial;
+    background: var(--colour1);
+}
+
+.hero {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 600px;
+    overflow: hidden;
+    z-index: -1;
+}
+
+.hero img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: var(--overlayColour);
+    opacity: 0;
+    filter: blur(5px)
+}
+
+.spacer {
+    height: 400px;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+.wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    margin-top: 15vh;
+}
+
+.banner {
+    position: absolute;
+    top: 65%;
+    left: 0;
+    width: 100%;
+    height: 700px;
+    background: var(--bannerColour);
+    z-index: 1;
+}
+
+
+.loginBox {
+    padding-top: 10px;
+    position: absolute;
+    top: 78%;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--loginColour);
+    border-radius: 10%;
+    padding: 2%;
+    padding-left: 2.6%;
+    width: 400px;
+    max-width: 90%;
+    height: 450px;
+    max-height: 90%;
+    display: flex;
+    flex-direction: column;
+    z-index: 2;
+    justify-content: top;
+    align-items: center;
+}
+#loginWord {
+    text-align: center;
+    color: var(--wordColour);
+    transform: translateX(-1%);
+}
+
+#registerWord {
+    text-align: center;
+    color: var(--wordColour);
+    transform: translateX(-1%);
+}
+
+.radioword {
+    color: var(--wordColour);
+}
+
+input, button {
+    width: 300px;
+    padding: 12px;
+    margin: 10px;
+    border-radius: 3%;
+}
+nav {
+    height: 55%;
+    position: top;
+    justify-content: center;
+    display: flex;
+    align-items: flex-start;
+    transform: translateX(-2%);
+    margin-right: 30px;
+}
+#login, #register {
+    position: left;
+    align-items: left;
+    width: 50px;
+    margin: 5px;
+    padding: 50px;
+
+    justify-content: left;
+}
+
+#registerDisplay {
+    position: top;
+    margin-bottom:-28%;
+    display: none; /* hidden by default */
+    flex-direction: column;
+    gap: 15px;
+}
+#loginDisplay {
+    
+    position: top;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+.extra-content {
+    height: 200px;
+}

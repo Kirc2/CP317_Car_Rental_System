@@ -4,13 +4,13 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/login.css">
 </head>
 
 <body>
 
     <div class="hero">
-        <img src="car_image_2.jpg" alt="Header Image">
+        <img src="imgs/car_image_2.jpg" alt="Header Image">
         <div class="overlay"></div>
     </div>
     <div class="spacer"></div>
@@ -21,8 +21,14 @@
         <form id="loginBox" class="loginBox">
             <table>
                 <tr>
-                    <td><nav for="login" id="loginWordRadio"><input id="login" type="radio" name="loginRegister" value="login" checked>login</nav></td>
-                    <td><nav for="register" id="registerWordRadio" color="white"><input id="register" type="radio" name="loginRegister" value="register">register</nav></td>
+                    <td>
+                        <label for="login" class="radioword">login</label>
+                        <input id="login" type="radio" name="loginRegister" value="login" checked>
+                    </td>
+                    <td>
+                        <label for="register" class="radioword" color="white">register</label>
+                        <input id="register" type="radio" name="loginRegister" value="register">
+                        </td>
                 </tr>
             </table>
             <div id="loginDisplay">

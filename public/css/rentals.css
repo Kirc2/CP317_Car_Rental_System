@@ -1,0 +1,241 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: #FFA500;
+    font-family: Arial, sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+}
+
+.welcome {
+    text-align: center;
+    margin-bottom: 100px;
+    padding-top: 70px;
+    font-size: 26px;
+    font-weight: bold;
+    color: white;
+    text-shadow: 1px 1px 3px rgba(0,0,0,0.2);
+}
+
+.welcome span {
+    color: #7B3A00;
+}
+
+#filterAndCars {
+  display: flex;
+  gap: 1rem;
+  align-items: flex-start;   /* stay top-aligned */
+}
+
+#filtered-list {
+    display: flex;
+    flex-direction: column;
+    border-collapse: separate;
+    border-spacing: 1rem;
+}
+#results {
+    margin: 2%, 2%, 30%, 2%;
+    padding: 2%;
+    width: 75%;
+}
+.filterBox {
+    background-color: #B35A00;
+    overflow-y: auto;
+    padding:1.5%;
+    flex-direction: column;
+    max-width: 20%;
+    max-height: calc(110vh - 40px);
+    display: flex;
+    gap: 16px;
+    position: sticky;
+    top: 5px;
+}
+
+.filterBox::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera */
+}
+
+.filterBox h2 {
+    color: white;
+    font-size: 1.5em;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 6px;
+}
+
+.filter-group {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 0px
+}
+.filter-group #colour, #Year, #carType{
+    height: 2%;
+    display: flex;
+    flex-direction: column;
+}
+
+.filter-group label {
+    color: white;
+    font-size: 0.9em;
+    font-weight: bold;
+    margin-bottom: 0.1em
+}
+
+select {
+    width: 95%;
+    padding: 7px 16px;
+    border-radius: 8px;
+    border: none;
+    background-color: #f9f9f7;
+    font-size: 15px;
+    color: #333;
+    cursor: pointer;
+    outline: none;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23888' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 14px center;
+}
+
+select:focus {
+    box-shadow: 0 0 0 2px rgba(255,255,255,0.4);
+}
+
+.apply-btn {
+    width: 100%;
+    padding: 1.2em;
+    border-radius: 8px;
+    border: 1.5px solid #333;
+    background-color: #f0f0ee;
+    font-size: 15px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 6px;
+    transition: background-color 0.2s;
+}
+
+.apply-btn:hover {
+    background-color: #ddd;
+}
+
+
+.listings-placeholder {
+    margin-top: 10px;
+    background-color: rgba(0,0,0,0.1);
+    border-radius: 12px;
+    padding: 30px;
+    text-align: center;
+    color: white;
+    font-size: 15px;
+    font-style: italic;
+}
+
+
+.rentalsRow {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    margin: 50%, 0%, 50%, 0%;
+}
+
+.rentalsRow td {
+    display: inline-block;
+    margin: 0.8rem;
+    vertical-align: top;
+    width: calc(33% - 1.6rem);
+    background-color: #e5e513;
+    padding: 0.7rem;        /* inner space inside each cell */
+    background: #ff8800;
+    border-radius: 2rem;
+}
+
+.rental-card {
+    justify-items: center;
+    padding: 6%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    border-radius: 12px;
+    text-decoration: none !important;
+    color: black !important;
+    transition: transform 0.1s, box-shadow 0.2s;
+    cursor: pointer;
+}
+
+.rental-card .image {
+    min-height: 150px; /* Set minimum height */
+    overflow: hidden; /* Crop anything that overflows */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.rental-card .image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Crop wide images to fit, maintaining aspect ratio */
+    display: block;
+}
+
+.rental-card .name {
+    justify-self: center;
+    font-family: 'Helvetica';
+    margin-top: 2%;
+    font-size: 1.2em;
+    font-weight: bold;
+    color: #000000;
+    text-decoration: none;
+    margin-bottom: 8px;
+}
+
+.rental-card .type {
+    font-size: 1em;
+    color: #666;
+    text-decoration: none;
+    font-style: italic;
+    margin-bottom: 4px;
+}
+
+.rental-card .price {
+    font-size: 1.1em;
+    font-weight: bold;
+    color: #000b8a;
+    text-decoration: none;
+    margin-bottom: 4px;
+}
+
+.rental-card .status {
+    font-size: 0.9em;
+    font-weight: bold;
+    align-self: center;
+    padding: 6px 12px;
+    border-radius: 20px;
+    display: inline-block;
+    margin-top: 8px;
+    width: fit-content;
+    background-color: #28a745;
+    color: white;
+}
+
+.rental-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    text-decoration: none !important;
+    color: black !important;
+}
+
+/* Confirmation message */
+.confirm-msg {
+    display: none;
+    text-align: center;
+    color: white;
+    font-weight: bold;
+    font-size: 15px;
+    margin-top: 4px;
+}
