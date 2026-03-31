@@ -109,4 +109,8 @@ public class CustomerDAO {
 	    String sql = "UPDATE customers SET email = ? WHERE id = ?";
 	    return MySQL.update(sql, newEmail, customerId);
 	}
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> 27f2521909b97ac9bd6ab7ace4835bfeb2b4765f

@@ -10,7 +10,6 @@ import main.java.com.carrental.model.Vehicle;
 import main.java.com.carrental.util.ModelUtil;
 
 import java.time.LocalDate;
-import java.time.LocalDate;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
@@ -250,6 +249,16 @@ public class ModelTest {
             Payment payment = new Payment();
             assertNotNull(payment);
             // Since Payment is empty, just verify it exists.
+        }
+    }
+    @Nested
+    class VehicleUtilTest {
+        @Test
+        void testGetVehicleStatusFromString() {
+            assertEquals(Vehicle.VehicleStatus.AVAILABLE, ModelUtil.getVehicleStatusFromString("AVAILABLE"));
+            assertEquals(Vehicle.VehicleStatus.RENTED, ModelUtil.getVehicleStatusFromString("RENTED"));
+            assertEquals(Vehicle.VehicleStatus.MAINTENANCE, ModelUtil.getVehicleStatusFromString("MAINTENANCE"));
+            assertNull(ModelUtil.getVehicleStatusFromString("UNKNOWN"));
         }
     }
 }
